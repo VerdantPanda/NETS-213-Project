@@ -2,7 +2,7 @@
 NETS 213 project by Ibrahim Fagbamila, Izzy Kim, Nick Ng, &amp; Susan Xie
 
 ## Major Project Components:
-Building the website for users and workers to interact with (9 pts)
+Building the website for users and workers to interact with (9 pts)<br/>
 Key site features:
 - Allow users to upload photos
 - Allow workers to wait and receive alerts for jobs when photos are uploaded
