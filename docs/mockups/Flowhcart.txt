@@ -1,0 +1,26 @@
+This is an additionial .txt file to elaborate upon the flowchart.
+
+Step-by-step process for the user:
+  1. User uploads two pictures of themselves, one of each outfit 
+  2. User specifies how fast they need a response back from the crowd
+      - Mention that if the user sets the time limit to a shorter time, they will get fewer responses (two time sets: 20 seconds for short, 5 minutes for long) 
+      - Cap the responses at 25, so if the # of response reach 25 before 5 minutes is over, then the poll expires immediately (ideally, want 20+ ppl polling)
+      - If we were to actually commercialize this, we could make this a premium feature
+  5. Task gets posted for the crowd to choose which of the two options is better (poll)
+  6. The better option is chosen by a simple majority vote.
+  7. The user sees which option has won after the time limit has been reached. The user can also see what % voted for each option.
+  8. The results will be cleaned up and presented to the user in a friendly interface.
+  *As we gather more data, we can adjust answers based on worker tendencies
+  
+Step-by-step process for a crowdworker:
+  1. Crowdworker sees a HIT posted on MTurk
+  2. Crowdworker has 30 minutes to wait for and work on the task(s)
+  3. Crowdworker gets paid for waiting time (30 cents for 30 minutes) and per task
+  4. At the end, they get a code which will be used to receive compensation on MTurk
+     - HIT displays a link which redirects them to our website (MTurk ID is given as a parameter for the URL)
+  5. Our website prompts them to wait until tasks appear (workers are free to do other hits in the meantime)
+  6. When a question is uploaded, the worker will receive an alert to complete the task (maybe we can also give time bonuses for quick answers - maybe have them predict what other workers will think are good)
+  7. The worker is shown a poll where they are asked to choose which of the two outfits is better
+  8. Crowdworker chooses which outfit is better for the user
+  9. The worker continues waiting and completing tasks as they appear until 30 minutes is up.
+  10. The worker inputs their MTurk ID and receives a code for compensation.
