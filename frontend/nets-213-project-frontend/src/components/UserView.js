@@ -3,7 +3,9 @@ class UserView extends React.Component {
   render() {
     return (
       <div>
-        <h1>User View</h1> <p>This is the page that users see</p>
+        {/* This is the page that users see */}
+        <h1>Second Opinion</h1>
+        <button></button>
       </div>
     );
   }

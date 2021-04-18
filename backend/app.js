@@ -5,6 +5,8 @@ const app = express(); //Create new instance
 
 const PORT = process.env.PORT || 5000; //Declare the port number
 
+const uri = process.env.ATLAS_URI;
+
 app.use(express.json()); //allows us to access request body as req.body
 app.use(morgan("dev")); //enable incoming request logging in dev mode
 
