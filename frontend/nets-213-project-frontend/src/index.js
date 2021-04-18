@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import logo from "./logo_nets.svg";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Route, Link, BrowserRouter as Router } from "react-router-dom";
@@ -16,7 +17,15 @@ import TurkerView from "./components/TurkerView";
 const routing = (
   <Router>
     <div>
-      <h1>Website Name</h1>
+      <img
+        src={logo}
+        alt="second_opinion_logo"
+        style={{
+          height: "auto",
+          maxWidth: "30%",
+        }}
+        draggable="false"
+      />
       <Route path="/" component={App} />
       <Route path="/user" component={UserView} />
       <Route path="/mturk/:id" component={TurkerView} />

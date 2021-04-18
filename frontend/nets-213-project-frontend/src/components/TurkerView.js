@@ -1,9 +1,5 @@
 import React from "react";
 class TurkerView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>
