@@ -19,7 +19,7 @@ const routing = (
       <h1>Website Name</h1>
       <Route path="/" component={App} />
       <Route path="/user" component={UserView} />
-      <Route path="/mturk:id" component={TurkerView} />
+      <Route path="/mturk/:id" component={TurkerView} />
     </div>
   </Router>
 );
