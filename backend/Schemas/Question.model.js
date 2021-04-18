@@ -1,0 +1,15 @@
+const mongoose = require("mongoose");
+
+const questionSchema = new mongoose.Schema(
+  {
+    _id: Number,
+    image1: { type: Buffer, 
+              required: true },
+    image2: { type: Buffer, 
+              required: true },
+  },
+  { timestamps: true }
+);
+
+const Question = mongoose.model("question", questionSchema);
+module.exports = Question;
