@@ -12,7 +12,12 @@ const workerSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     }, 
-    qs_answered: [Number]
+    qs_answered: [
+      {
+        id: Number, 
+        time: Date
+      }
+    ]
   },
   { timestamps: true }
 );
