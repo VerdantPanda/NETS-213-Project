@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const workerSchema = new mongoose.Schema(
   {
     _id: Number,
+    id: String, 
     time_entered: {
       type: Date,
       default: Date.now
