@@ -3,27 +3,27 @@
     "$oid": "607cdf8828703a16e303672c"
   },
   "qID": 0,
-  "answer": [
+  "true_answer": 0,
+  "answers": [
     0,
     1,
     1,
     0,
     0
-  ],
-  "true_answer": 0
+  ]
 },{
   "_id": {
     "$oid": "607ce24528703a16e3036731"
   },
   "qID": 1,
-  "answer": [
+  "true_answer": 1,
+  "answers": [
     1,
     1,
     0,
     1,
     1
-  ],
-  "true_answer": 1
+  ]
 },{
   "_id": {
     "$oid": "607ce3bd28703a16e3036735"
