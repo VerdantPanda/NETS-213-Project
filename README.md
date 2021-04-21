@@ -36,3 +36,27 @@ Start building the website where users can upload photos and workers can wait/vo
 Build aggregation system and improve UI. Post HITs on MTurk and start having people interact with the website so we can collect data.
 ### MS3
 Process the data we collected and evaluate the performance of our system.
+
+## Aggregation and QC Modules
+We store the results of our workers through a mongoDB database, which is then exported as a .json for our Aggregation and QC modules to parse. Our database has 3 schemas: a Question model, an Answer model, and a Worker model. 
+
+The Question model is broken down as follows:
+- qID: a unique numerical ID associated with each question
+- image1: an image buffer containing the first image the user uploaded
+- image2: an image buffer containing the second image the user uploaded
+- time: the time the question was posted
+
+The Answer model is broken down as follows: 
+- qID: a numerical ID corresponding to a question
+- answers: an array of 0s and 1s, where 0 refers to a worker answer of image1 and 1 refers to a worker answer of image2. 
+- true_answer: 0 or 1, referring to what the user actually chose 
+
+The Worker model is the most complex and contains the following: 
+- id: a string containing the worker's MTurk ID
+- time_entered: the time the user entered the site
+- time_left: the time the user left the site
+- qs_answered: an array of questions answered, containing the question ID, the time the question was answered by this particular worker, and a 0 or 1 associated with what the worker answered 
+
+### Aggregation
+
+### QC Module
