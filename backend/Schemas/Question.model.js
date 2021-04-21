@@ -8,6 +8,7 @@ const questionSchema = new mongoose.Schema(
               required: true },
     image2: { type: Buffer, 
               required: true },
+    time: Date
   },
   { timestamps: true }
 );
