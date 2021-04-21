@@ -4,167 +4,128 @@
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 0
+  "qID": 0,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc7d5df87c88362a776cb"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 1
+  "qID": 1,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc7f4df87c88362a776cc"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 2
+  "qID": 2,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc828df87c88362a776cd"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 3
+  "qID": 3,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc99ddf87c88362a776ce"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 4
+  "qID": 4,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc9b9df87c88362a776cf"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 5
+  "qID": 5,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc9d5df87c88362a776d0"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 6
+  "qID": 6,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cc9e8df87c88362a776d1"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 7
+  "qID": 7,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cca41df87c88362a776d2"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 8
+  "qID": 8,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cca58df87c88362a776d3"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 9
+  "qID": 9,
+  "time": {
+    "$date": "2021-04-19T16:02:25.284Z"
+  }
 },{
   "_id": {
     "$oid": "607cca76df87c88362a776d4"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 10
+  "qID": 10,
+  "time": {
+    "$date": "2021-04-19T16:05:23.128Z"
+  }
 },{
   "_id": {
     "$oid": "607ccd75df87c88362a776dc"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 11
+  "qID": 11,
+  "time": {
+    "$date": "2021-04-19T16:05:22.128Z"
+  }
 },{
   "_id": {
     "$oid": "607ccd8ddf87c88362a776dd"
   },
   "image1": null,
   "image2": null,
-  "timestamp": {
-    "$timestamp": {
-      "t": 0,
-      "i": 0
-    }
-  },
-  "qID": 12
+  "qID": 12,
+  "time": {
+    "$date": "2021-04-19T16:05:22.128Z"
+  }
 }]
