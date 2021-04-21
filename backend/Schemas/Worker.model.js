@@ -15,7 +15,8 @@ const workerSchema = new mongoose.Schema(
     qs_answered: [
       {
         id: Number, 
-        time: Date
+        time: Date, 
+        answer: Number
       }
     ]
   },
