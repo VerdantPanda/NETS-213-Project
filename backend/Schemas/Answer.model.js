@@ -4,7 +4,8 @@ const answerSchema = new mongoose.Schema(
   {
     _id: Number,
     qID: Number, 
-    answers: [Number]
+    answers: [Number],
+    true_answer: Number
   },
   { timestamps: true }
 );
