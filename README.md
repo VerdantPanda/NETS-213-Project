@@ -58,5 +58,7 @@ The Worker model is the most complex and contains the following:
 - qs_answered: an array of questions answered, containing the question ID, the time the question was answered by this particular worker, and a 0 or 1 associated with what the worker answered 
 
 ### Aggregation
+To be found under data_processing -> ag_module. Worker votes are aggregated by using a polling system. A simple majority vote will be used to inform the buyer which of the two options they should choose from. 
 
 ### QC Module
+To be found under data_processing -> qc_module. Quality control is done by having the worker input his/her id so that we can track which users are working on which poll. This way, we have access to who voted for which option so we can filter out workers who are randomly clicking any option. 
