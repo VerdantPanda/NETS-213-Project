@@ -32,9 +32,11 @@ class TurkerView extends React.Component {
           votes_limit: 1,
         },
       ],
+      intervalId: 0,
     };
 
     this.getJobToDelete = this.getJobToDelete.bind(this);
+    this.requestNewJobs = this.requestNewJobs.bind(this);
   }
 
   getJobToDelete(viewsKey) {
@@ -43,7 +45,29 @@ class TurkerView extends React.Component {
   }
 
   requestNewJobs() {
+    let newJobs = [
+      {
+        userid: 5343445,
+        photo_1_url:
+          "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
+        photo_2_url:
+          "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
+        votes_limit: 1,
+      },
+    ];
     // TODO: Axios call
+    console.log("mock AXIOS call request new jobs");
+    let newJobArray = this.state.jobs.concat(newJobs);
+    this.setState({ jobs: newJobArray });
+    if (true) {
+      // TODO: end condition for set interval
+      clearInterval(this.state.intervalId);
+    }
+  }
+
+  componentDidMount() {
+    const intervalId = setInterval(this.requestNewJobs, 5000);
+    this.setState({ intervalId: intervalId });
   }
 
   render() {
@@ -82,23 +106,32 @@ class TurkerView extends React.Component {
               maxHeight: "650px",
             }}
           >
-            {this.state.jobs.length > 0
-              ? this.state.jobs.map((elem, key) => {
-                  return (
-                    <div key={elem.userid}>
-                      <JobView
-                        photo_1={elem.photo_1_url}
-                        photo_2={elem.photo_2_url}
-                        userid={elem.userid}
-                        viewKey={key}
-                        sendJobsToDelete={this.getJobToDelete}
-                      ></JobView>
-                      <br></br>
-                      <br></br>
-                    </div>
-                  );
-                })
-              : "No jobs currently available."}
+            {this.state.jobs.length > 0 ? (
+              this.state.jobs.map((elem, key) => {
+                return (
+                  <div key={elem.userid}>
+                    <JobView
+                      photo_1={elem.photo_1_url}
+                      photo_2={elem.photo_2_url}
+                      userid={elem.userid}
+                      viewKey={key}
+                      sendJobsToDelete={this.getJobToDelete}
+                    ></JobView>
+                    <br></br>
+                    <br></br>
+                  </div>
+                );
+              })
+            ) : (
+              <div>
+                <p>No jobs currently available.</p>
+                <img
+                  style={{ height: "50px", width: "50px" }}
+                  alt="loading"
+                  src="https://i.gifer.com/ZZ5H.gif"
+                ></img>
+              </div>
+            )}
           </Container>
           <br></br>
           <br></br>
