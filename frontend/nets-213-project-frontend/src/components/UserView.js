@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Container, Grid, AppBar, Toolbar } from "@material-ui/core";
+import UserUpload from "./UserUpload";
 
 const useStyles = {
   background: "#b8d7dc",
@@ -35,10 +36,11 @@ class UserView extends React.Component {
         </AppBar>
 
         <Container maxWidth="lg">
-          <h1 align="center">
+          {/* <h1 align="center">
             <b>Welcome to SecondOpinion!</b>
           </h1>
-          <p align="center">Click "Post" to post a poll and begin</p>
+          <p align="center">Click "Post" to post a poll and begin</p> */}
+          <UserUpload></UserUpload>
         </Container>
       </div>
     );
