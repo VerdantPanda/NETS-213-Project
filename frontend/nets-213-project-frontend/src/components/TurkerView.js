@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Container, Grid, AppBar, Toolbar } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  AppBar,
+  Toolbar,
+  CircularProgress,
+} from "@material-ui/core";
 import JobView from "./JobView";
 
 class TurkerView extends React.Component {
@@ -133,11 +140,7 @@ class TurkerView extends React.Component {
             ) : (
               <div>
                 <p>No new jobs currently available.</p>
-                <img
-                  style={{ height: "50px", width: "50px" }}
-                  alt="loading"
-                  src="https://i.gifer.com/ZZ5H.gif"
-                ></img>
+                <CircularProgress />
               </div>
             )}
           </Container>
