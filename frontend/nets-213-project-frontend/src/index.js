@@ -4,7 +4,7 @@ import "./index.css";
 import logo from "./logo_nets.svg";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import UserView from "./components/UserView";
 import TurkerView from "./components/TurkerView";
 
