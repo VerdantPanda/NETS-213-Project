@@ -32,6 +32,7 @@ class TurkerView extends React.Component {
           votes_limit: 1,
         },
       ],
+      doneJobIds: [],
       intervalId: 0,
     };
 
@@ -40,6 +41,9 @@ class TurkerView extends React.Component {
   }
 
   getJobToDelete(viewsKey) {
+    let oldJobsList = [viewsKey];
+    const newOldJobsArray = this.state.doneJobIds.concat(oldJobsList);
+    this.setState({ doneJobIds: newOldJobsArray });
     const newList = this.state.jobs.filter((job) => job.userid !== viewsKey);
     this.setState({ jobs: newList });
   }
@@ -55,9 +59,13 @@ class TurkerView extends React.Component {
         votes_limit: 1,
       },
     ];
+
     // TODO: Axios call
     console.log("mock AXIOS call request new jobs");
-    let newJobArray = this.state.jobs.concat(newJobs);
+
+    let newJobArray = this.state.jobs
+      .concat(newJobs)
+      .filter((job) => !this.state.doneJobIds.includes(job.userid)); // Ensures old jobs dont show up again to turker
     this.setState({ jobs: newJobArray });
     if (true) {
       // TODO: end condition for set interval
@@ -124,7 +132,7 @@ class TurkerView extends React.Component {
               })
             ) : (
               <div>
-                <p>No jobs currently available.</p>
+                <p>No new jobs currently available.</p>
                 <img
                   style={{ height: "50px", width: "50px" }}
                   alt="loading"
