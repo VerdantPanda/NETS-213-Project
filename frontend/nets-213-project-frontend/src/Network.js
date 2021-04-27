@@ -45,8 +45,9 @@ async function getJobs() {
   return jobList;
 }
 
-async function getVotes() {
+async function getVotes(jobId) {
   let votingData = {};
+  // TODO: use jobId
   try {
     votingData = await axios.default.get(`${baseURL}votes`);
   } catch (error) {

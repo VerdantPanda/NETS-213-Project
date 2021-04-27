@@ -2,18 +2,14 @@ import React from "react";
 import { Button, Container, Grid, AppBar, Toolbar } from "@material-ui/core";
 import UserUpload from "./UserUpload";
 
-const useStyles = {
-  background: "#b8d7dc",
-  borderRadius: 3,
-  boxShadow: "0 3px 5px 2px #244A50",
-  color: "black",
-};
-
 //  This is the page that users see
 class UserView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { postPhase: false };
+    this.state = {
+      postPhase: false,
+      UserId: Math.random().toString(16).substr(2, 10),
+    };
   }
   render() {
     return (
@@ -26,8 +22,17 @@ class UserView extends React.Component {
                 variant="contained"
                 color="primary"
                 size="large"
-                style={useStyles}
+                style={{
+                  background: "#b8d7dc",
+                  borderRadius: 3,
+                  boxShadow: "0 3px 5px 2px #244A50",
+                  color: "black",
+                  display: this.state.postPhase ? "none" : "",
+                }}
                 align="right"
+                onClick={() => {
+                  this.setState({ postPhase: true });
+                }}
               >
                 Post
               </Button>
@@ -36,11 +41,16 @@ class UserView extends React.Component {
         </AppBar>
 
         <Container maxWidth="lg">
-          {/* <h1 align="center">
-            <b>Welcome to SecondOpinion!</b>
-          </h1>
-          <p align="center">Click "Post" to post a poll and begin</p> */}
-          <UserUpload></UserUpload>
+          {!this.state.postPhase ? (
+            <div>
+              <h1 align="center">
+                <b>Welcome to SecondOpinion!</b>
+              </h1>
+              <p align="center">Click "Post" to post a poll and begin</p>
+            </div>
+          ) : (
+            <UserUpload UserId={this.state.UserId}></UserUpload>
+          )}
         </Container>
       </div>
     );
