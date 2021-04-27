@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const workerSchema = new mongoose.Schema(
   {
-    _id: Number,
     id: String, 
     time_entered: {
       type: Date,
@@ -24,4 +23,4 @@ const workerSchema = new mongoose.Schema(
 );
 
 const Worker = mongoose.model("worker", workerSchema);
-module.exports = Worker;
+module.exports = workerSchema;

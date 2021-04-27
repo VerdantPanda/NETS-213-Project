@@ -1,5 +1,15 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require('mongoose')
+const answerSchema = require('./Schemas/Answer.model.js')
+const workerSchema = require('./Schemas/Worker.model.js')
+const questionSchema = require('./Schemas/Question.model.js')
+const answer = mongoose.model('answer', answerSchema, 'answer')
+const worker = mongoose.model('worker', workerSchema, 'workers')
+const question = mongoose.model('question', questionSchema, 'questions')
+string_thing = "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const connector = mongoose.connect(string_thing, { useNewUrlParser: true, useUnifiedTopology: true})
+
 
 const app = express(); //Create new instance
 
@@ -18,11 +28,12 @@ app.get("/", (req, res) => {
   });
 });
 
-job_count = 0
+
 jobs = {}
 
 app.post("/photo", (req, res) => {
   console.log(req.body)
+  console.log('hi')
   userid = req.body.user_id
   photo1 = req.body.photo_1_url
   photo2 = req.body.photo_2_url
@@ -33,58 +44,146 @@ app.post("/photo", (req, res) => {
   return res.send(jobs)
 
 });
-
+counter = 0
 //modify for photos
-app.get("/test1", (req, res) => {
+app.post("/photos", async(req, res) => {
   //Define the endpoint
-  userid = req.query.user_id
-  photo1 = req.query.photo_1_url
-  photo2 = req.query.photo_2_url
-  limit = req.query.votes_limit
-  jobs[job_count] = {'user':userid,
-                    'p1':photo1,
-                    'p2':photo2, 
-                    'limit':limit,
-                    'responses':[],
-                    'id': job_count}
+  // await client.connect();
+  // const database = client.db('myFirstDatabase')
+  // y = database.collection('questions')
+  // lmao = await y.countDocuments()
+  userid = req.body.userid
+  photo1 = req.body.photo_1_url
+  photo2 = req.body.photo_2_url
+  limit = req.body.votes_limit
 
-  job_count = job_count + 1
-  return res.json(jobs[job_count-1])
+
+
+  xd = await question.countDocuments()
+  var new_job = new question({
+                  qID : xd,
+                  image1: photo1,
+                  image2: photo2,
+                  time: Date.now(),
+                  vote_limit: limit
+                })
+  new_job.save()
+
+  // jobs[job_count] = {'user':userid,
+  //                   'p1':photo1,
+  //                   'p2':photo2,
+  //                   'limit':limit,
+  //                   'responses':[],
+  //                   'id': job_count}
+  // job_count = job_count + 1
+  return res.json(xd)
 });
 
 //modify to display votes
-app.get("/test2", (req, res) => {
+app.get("/votes", async(req, res) => {
   //Define the endpoint
-  job_id = req.query.job_id
-  info = jobs[job_id].responses
-  return res.json(info)
+  job_id = req.body.job_id
+  let response = await question.findOne({qID: job_id})
+  if (response) {
+    q1s = 0
+    q2s = 0
+    comments = []
+    vs = response.votes
+    for (i = 0; i < vs.length; i++){
+      if (vs[i].answer == 1){
+        q1s += 1
+      }
+      else{
+        q2s += 1
+      }
+      comments.push(v.comments)
+    }
+    return res.json({'Votes_photo_1':q1s,
+    'Votes_photo_2':q2s,
+    'Comments':comments})
+  }
+  else{
+    console.log('uh oh')
+    return res.json('oops')
+  }
 });
 
 
 //modify to get worker votes
-app.get("/test3", (req, res) => {
+app.get("/test3", async(req, res) => {
   //Define the endpoint
   job_id = req.query.job_id
   worker_id = req.query.worker_id
   resp = req.query.response
   comments = req.query.comments
-  obj = {'worker_id': worker_id, 'response':resp, 'comments':comments}
-  jobs[job_id].responses.push(obj)
-  return res.json(obj)
+
+  var stuff = {
+    worker_id : worker_id,
+    answer: resp,
+    comments: comments, 
+    time_answered: Date.now()
+  }
+  lol = await question.updateOne({qID: job_id},
+    {$push : {
+      votes: stuff
+    }
+  })
+  var stuff2 = {
+    id: job_id, 
+    time: Date.now(), 
+    answer: resp
+  }
+  lol2 = await worker.updateOne({id: worker_id},
+    {$push : {
+      qs_answered : stuff2
+    }
+
+  })
+  if (lol){
+    return res.json(stuff)
+  }
+  else{
+    return res.json('poop')  }
+
 });
 
 //send workers new jobs
-app.get("/test4", (req, res) => {
+app.get("/test4", async(req, res) => {
   //Define the endpoint
-  new_jobs = []
+
   last_job_id = req.query.job_id
-  if (last_job_id >= job_count){
+  new_jobs = await question.find( {qID: {$gt: last_job_id} })
+  if (new_jobs){
+    return res.json(new_jobs)
+  }
+  else {
     return res.json('no new jobs')
   }
-  for (i = parseInt(last_job_id)+1; i <= job_count; i++) {
-    new_jobs += jobs[i]
+});
+
+//send workers new jobs
+app.post("/test5", async(req, res) => {
+  //Define the endpoint
+  userid = req.body.user_id
+  l = await worker.findOne({id: userid})
+  if (l){
+    return res.json('was already here')
   }
-  return res.json(new_jobs)
+  else{
+    var new_worker = new worker({
+      id: userid, 
+      time_entered: Date.now(), 
+      time_left: Date.now(), 
+      qs_answered: []
+    })
+    response = await new_worker.save()
+    if (response){
+      return res.json('gottem')
+    }
+    else{
+      return res.json('oops')
+    }
+  }
 });
 
 
