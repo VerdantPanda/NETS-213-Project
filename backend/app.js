@@ -58,78 +58,78 @@ counter = 0
 
 
 
-app.post('/photos', async(req,res) => {
+// app.post('/photos', async(req,res) => {
 
-  userid = req.body.userid
-  photo_1 = req.body.photo_1_url
-  photo_2 = req.body.photo_2_url
-  limit = req.body.votes_limit
+//   userid = req.body.userid
+//   photo_1 = req.body.photo_1_url
+//   photo_2 = req.body.photo_2_url
+//   limit = req.body.votes_limit
 
-  const s3 = new aws.S3();  // Create a new instance of S3
-  const fileName = photo_1;
-  const fileType = photo_1.type;
-// Set up the payload of what we are sending to the S3 api
-  const s3Params = {
-    Bucket: S3_BUCKET,
-    Key: fileName,
-    Expires: 500,
-    ContentType: fileType,
-    ACL: 'public-read'
-  };
+//   const s3 = new aws.S3();  // Create a new instance of S3
+//   const fileName = photo_1;
+//   const fileType = photo_1.type;
+// // Set up the payload of what we are sending to the S3 api
+//   const s3Params = {
+//     Bucket: S3_BUCKET,
+//     Key: fileName,
+//     Expires: 500,
+//     ContentType: fileType,
+//     ACL: 'public-read'
+//   };
 
-  const s32 = new aws.S3();  // Create a new instance of S3
-  const fileName2 = photo_2;
-  const fileType2 = photo_2.type;
-// Set up the payload of what we are sending to the S3 api
-  const s32Params = {
-    Bucket: S3_BUCKET,
-    Key: fileName2,
-    Expires: 500,
-    ContentType: fileType2,
-    ACL: 'public-read'
-  };
+//   const s32 = new aws.S3();  // Create a new instance of S3
+//   const fileName2 = photo_2;
+//   const fileType2 = photo_2.type;
+// // Set up the payload of what we are sending to the S3 api
+//   const s32Params = {
+//     Bucket: S3_BUCKET,
+//     Key: fileName2,
+//     Expires: 500,
+//     ContentType: fileType2,
+//     ACL: 'public-read'
+//   };
 
-  s3.getSignedUrl('putObject', s3Params, (err, data) => {
-    if(err){
-      console.log(err);
-      res.json({success: false, error: err})
-    }  
+//   s3.getSignedUrl('putObject', s3Params, (err, data) => {
+//     if(err){
+//       console.log(err);
+//       res.json({success: false, error: err})
+//     }  
 
-    const returnData = {
-      signedRequest: data,
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
-    };
-    // Send it all back
-    s3.getSignedUrl('putObject', s3Params, (err2, data2) => {
-      if(err2){
-        console.log(err2);
-        res.json({success: false, error: err2})
-      }  
+//     const returnData = {
+//       signedRequest: data,
+//       url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+//     };
+//     // Send it all back
+//     s3.getSignedUrl('putObject', s3Params, (err2, data2) => {
+//       if(err2){
+//         console.log(err2);
+//         res.json({success: false, error: err2})
+//       }  
   
-      const returnData = {
-        signedRequest: data2,
-        url2: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName2}`
-      };
+//       const returnData = {
+//         signedRequest: data2,
+//         url2: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName2}`
+//       };
 
-      xd = await question.countDocuments()
-      var new_job = new question({
-                      qID : xd,
-                      image1: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
-                      image2: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName2}`,
-                      time: Date.now(),
-                      vote_limit: limit
-                    })
-      new_job.save()
+//       xd = await question.countDocuments()
+//       var new_job = new question({
+//                       qID : xd,
+//                       image1: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
+//                       image2: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName2}`,
+//                       time: Date.now(),
+//                       vote_limit: limit
+//                     })
+//       new_job.save()
 
-      return res.json(xd);
-    });
-  });
-});
+//       return res.json(xd);
+//     });
+//   });
+// });
 
 
 
 //modify for photos
-app.post("/photosx", async(req, res) => {
+app.post("/photos", async(req, res) => {
   //Define the endpoint
   // await client.connect();
   // const database = client.db('myFirstDatabase')
