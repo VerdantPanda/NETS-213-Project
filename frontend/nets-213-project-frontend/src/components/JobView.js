@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, Container } from "@material-ui/core";
 import JobViewImg from "./JobViewImg";
-import { sendVote } from "../Network";
+// import { sendVote } from "../Network";
 class JobView extends React.Component {
   constructor(props) {
     super(props);

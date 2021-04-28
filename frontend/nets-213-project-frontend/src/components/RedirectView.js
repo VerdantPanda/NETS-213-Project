@@ -18,6 +18,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { Redirect } from "react-router";
+import { logWorker } from "../Network";
 
 class RedirectView extends React.Component {
   constructor(props) {
@@ -79,8 +80,12 @@ class RedirectView extends React.Component {
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={() => {
-                  if (this.state.workerId.length > 0) {
+                onClick={async () => {
+                  await logWorker(this.state.workerId);
+                  if (
+                    this.state.workerId.length === 14 &&
+                    this.state.workerId.match(/^[A-Za-z0-9]+$/)
+                  ) {
                     this.setState({
                       showDialog: false,
                       redirectToWorker: true,

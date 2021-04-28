@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid, LinearProgress, Chip } from "@material-ui/core";
-import getVotes from "../Network";
+// import getVotes from "../Network";
 
 class UserResults extends React.Component {
   constructor(props) {
