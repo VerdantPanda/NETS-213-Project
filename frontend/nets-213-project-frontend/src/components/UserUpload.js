@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import UserResults from "./UserResults";
 // import uploadToS3 from "../Network";
 
-// import sendPhotos from "../Network";
+import { sendPhotos } from "../Network";
 
 class UserUpload extends React.Component {
   constructor(props) {
@@ -154,6 +154,12 @@ class UserUpload extends React.Component {
               } else {
                 // await uploadToS3(this.state.files[0]);
                 // await uploadToS3(this.state.files[1]);
+                await sendPhotos(
+                  this.props.UserId,
+                  this.state.files[0],
+                  this.state.files[1],
+                  10
+                );
                 this.setState({ submitReady: true });
               }
             }}
