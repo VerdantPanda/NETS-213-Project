@@ -1,25 +1,29 @@
 const express = require("express");
 const morgan = require("morgan");
-const mongoose = require('mongoose')
-const answerSchema = require('./Schemas/Answer.model.js')
-const workerSchema = require('./Schemas/Worker.model.js')
-const questionSchema = require('./Schemas/Question.model.js')
-const answer = mongoose.model('answer', answerSchema, 'answer')
-const worker = mongoose.model('worker', workerSchema, 'workers')
-const question = mongoose.model('question', questionSchema, 'questions')
-string_thing = "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-const connector = mongoose.connect(string_thing, { useNewUrlParser: true, useUnifiedTopology: true})
-var aws = require('aws-sdk'); 
+const mongoose = require("mongoose");
+const answerSchema = require("./Schemas/Answer.model.js");
+const workerSchema = require("./Schemas/Worker.model.js");
+const questionSchema = require("./Schemas/Question.model.js");
+const answer = mongoose.model("answer", answerSchema, "answer");
+const worker = mongoose.model("worker", workerSchema, "workers");
+const question = mongoose.model("question", questionSchema, "questions");
+string_thing =
+  "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const connector = mongoose.connect(string_thing, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+var aws = require("aws-sdk");
+const cors = require("cors");
 //require('dotenv').config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
-  region: 'us-east-1', // Put your aws region here
+  region: "us-east-1", // Put your aws region here
   accessKeyId: process.env.AWSAccessKeyId,
-  secretAccessKey: process.env.AWSSecretKey
-})
+  secretAccessKey: process.env.AWSSecretKey,
+});
 
-const S3_BUCKET = process.env.bucket
-
+const S3_BUCKET = process.env.bucket;
 
 const app = express(); //Create new instance
 
@@ -29,6 +33,7 @@ const uri = process.env.ATLAS_URI;
 
 app.use(express.json()); //allows us to access request body as req.body
 app.use(morgan("dev")); //enable incoming request logging in dev mode
+app.use(cors());
 
 app.get("/", (req, res) => {
   //Define the endpoint
@@ -38,25 +43,21 @@ app.get("/", (req, res) => {
   });
 });
 
-
-jobs = {}
+jobs = {};
 
 app.post("/photo", (req, res) => {
-  console.log(req.body)
-  console.log('hi')
-  userid = req.body.user_id
-  photo1 = req.body.photo_1_url
-  photo2 = req.body.photo_2_url
-  limit = req.body.votes_limit
+  console.log(req.body);
+  console.log("hi");
+  userid = req.body.user_id;
+  photo1 = req.body.photo_1_url;
+  photo2 = req.body.photo_2_url;
+  limit = req.body.votes_limit;
 
-  jobs['p1'] = photo1
-  console.log(userid, limit, photo1)
-  return res.send(jobs)
-
+  jobs["p1"] = photo1;
+  console.log(userid, limit, photo1);
+  return res.send(jobs);
 });
-counter = 0
-
-
+counter = 0;
 
 // app.post('/photos', async(req,res) => {
 
@@ -93,7 +94,7 @@ counter = 0
 //     if(err){
 //       console.log(err);
 //       res.json({success: false, error: err})
-//     }  
+//     }
 
 //     const returnData = {
 //       signedRequest: data,
@@ -104,8 +105,8 @@ counter = 0
 //       if(err2){
 //         console.log(err2);
 //         res.json({success: false, error: err2})
-//       }  
-  
+//       }
+
 //       const returnData = {
 //         signedRequest: data2,
 //         url2: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName2}`
@@ -126,33 +127,28 @@ counter = 0
 //   });
 // });
 
-
-
 //modify for photos
-app.post("/photos", async(req, res) => {
+app.post("/photos", async (req, res) => {
   //Define the endpoint
   // await client.connect();
   // const database = client.db('myFirstDatabase')
   // y = database.collection('questions')
   // lmao = await y.countDocuments()
 
-  
-  userid = req.body.userid
-  photo1 = req.body.photo_1_url
-  photo2 = req.body.photo_2_url
-  limit = req.body.votes_limit
+  userid = req.body.userid;
+  photo1 = req.body.photo_1_url;
+  photo2 = req.body.photo_2_url;
+  limit = req.body.votes_limit;
 
-
-
-  xd = await question.countDocuments()
+  xd = await question.countDocuments();
   var new_job = new question({
-                  qID : xd,
-                  image1: photo1,
-                  image2: photo2,
-                  time: Date.now(),
-                  vote_limit: limit
-                })
-  new_job.save()
+    qID: xd,
+    image1: photo1,
+    image2: photo2,
+    time: Date.now(),
+    vote_limit: limit,
+  });
+  new_job.save();
 
   // jobs[job_count] = {'user':userid,
   //                   'p1':photo1,
@@ -161,129 +157,124 @@ app.post("/photos", async(req, res) => {
   //                   'responses':[],
   //                   'id': job_count}
   // job_count = job_count + 1
-  return res.json(xd)
+  return res.json(xd);
 });
 
 //modify to display votes
-app.get("/votes", async(req, res) => {
+app.get("/votes", async (req, res) => {
   //Define the endpoint
-  job_id = req.body.job_id
-  let response = await question.findOne({qID: job_id})
+  job_id = req.body.job_id;
+  let response = await question.findOne({ qID: job_id });
   if (response) {
-    q1s = 0
-    q2s = 0
-    comments = []
-    vs = response.votes
-    for (i = 0; i < vs.length; i++){
-      if (vs[i].answer == 1){
-        q1s += 1
+    q1s = 0;
+    q2s = 0;
+    comments = [];
+    vs = response.votes;
+    for (i = 0; i < vs.length; i++) {
+      if (vs[i].answer == 1) {
+        q1s += 1;
+      } else {
+        q2s += 1;
       }
-      else{
-        q2s += 1
-      }
-      comments.push(v.comments)
+      comments.push(v.comments);
     }
-    return res.json({'Votes_photo_1':q1s,
-    'Votes_photo_2':q2s,
-    'Comments':comments})
-  }
-  else{
-    console.log('uh oh')
-    return res.json('oops')
+    return res.json({
+      Votes_photo_1: q1s,
+      Votes_photo_2: q2s,
+      Comments: comments,
+    });
+  } else {
+    console.log("uh oh");
+    return res.json("oops");
   }
 });
-
 
 //modify to get worker votes
-app.get("/test3", async(req, res) => {
+app.get("/test3", async (req, res) => {
   //Define the endpoint
-  job_id = req.query.job_id
-  worker_id = req.query.worker_id
-  resp = req.query.response
-  comments = req.query.comments
+  job_id = req.query.job_id;
+  worker_id = req.query.worker_id;
+  resp = req.query.response;
+  comments = req.query.comments;
 
   var stuff = {
-    worker_id : worker_id,
+    worker_id: worker_id,
     answer: resp,
-    comments: comments, 
-    time_answered: Date.now()
-  }
-  lol = await question.updateOne({qID: job_id},
-    {$push : {
-      votes: stuff
+    comments: comments,
+    time_answered: Date.now(),
+  };
+  lol = await question.updateOne(
+    { qID: job_id },
+    {
+      $push: {
+        votes: stuff,
+      },
     }
-  })
+  );
   var stuff2 = {
-    id: job_id, 
-    time: Date.now(), 
-    answer: resp
-  }
-  lol2 = await worker.updateOne({id: worker_id},
-    {$push : {
-      qs_answered : stuff2
+    id: job_id,
+    time: Date.now(),
+    answer: resp,
+  };
+  lol2 = await worker.updateOne(
+    { id: worker_id },
+    {
+      $push: {
+        qs_answered: stuff2,
+      },
     }
-
-  })
-  if (lol){
-    return res.json(stuff)
-  }
-  else{
-    return res.json('poop')  }
-
-});
-
-//send workers new jobs
-app.get("/test4", async(req, res) => {
-  //Define the endpoint
-
-  last_job_id = req.query.job_id
-  new_jobs = await question.find( {qID: {$gt: last_job_id} })
-  if (new_jobs){
-    return res.json(new_jobs)
-  }
-  else {
-    return res.json('no new jobs')
+  );
+  if (lol) {
+    return res.json(stuff);
+  } else {
+    return res.json("poop");
   }
 });
 
 //send workers new jobs
-app.post("/test5", async(req, res) => {
+app.get("/test4", async (req, res) => {
   //Define the endpoint
-  userid = req.body.user_id
-  l = await worker.findOne({id: userid})
-  if (l){
-    return res.json('was already here')
+
+  last_job_id = req.query.job_id;
+  new_jobs = await question.find({ qID: { $gt: last_job_id } });
+  if (new_jobs) {
+    return res.json(new_jobs);
+  } else {
+    return res.json("no new jobs");
   }
-  else{
+});
+
+//send workers new jobs
+app.post("/test5", async (req, res) => {
+  //Define the endpoint
+  userid = req.body.user_id;
+  l = await worker.findOne({ id: userid });
+  if (l) {
+    return res.json("was already here");
+  } else {
     var new_worker = new worker({
-      id: userid, 
-      time_entered: Date.now(), 
-      time_left: Date.now(), 
-      qs_answered: []
-    })
-    response = await new_worker.save()
-    if (response){
-      return res.json('gottem')
-    }
-    else{
-      return res.json('oops')
+      id: userid,
+      time_entered: Date.now(),
+      time_left: Date.now(),
+      qs_answered: [],
+    });
+    response = await new_worker.save();
+    if (response) {
+      return res.json("gottem");
+    } else {
+      return res.json("oops");
     }
   }
 });
-
-
-
 
 //modify to get worker votes
 app.get("/testjobs", (req, res) => {
   //Define the endpoint
-  console.log(jobs)
+  console.log(jobs);
   return res.send({
     status: "Healthy",
   });
 });
-
-
 
 app.listen(PORT, () => {
   console.log("Server started listening on port : ", PORT);
