@@ -4,6 +4,8 @@ const baseURL = "http://localhost:5000/";
 // const baseURL = "/api/";
 
 async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
+  let imgbbURL_1 = "";
+  let imgbbURL_2 = "";
   try {
     // const res = await axios.default.post(
     //   "https://api.imgbb.com/1/upload",
@@ -21,44 +23,48 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
     //   }
     // );
     // console.log(res);
-    const testURL =
-      "https://api.imgbb.com/1/upload?key=2d87cb340c2a1c5dec37b002b8dd644f&image=";
-    const myInit = {
-      method: "POST",
-      mode: "no-cors",
-      body: { image: photo_1_url },
-    };
+    // const testURL =
+    //   "https://api.imgbb.com/1/upload?key=2d87cb340c2a1c5dec37b002b8dd644f&image=";
 
-    const myRequest = new Request(testURL, myInit);
+    let body = new FormData();
+    body.set("key", "2d87cb340c2a1c5dec37b002b8dd644f");
+    body.append("image", photo_1_url);
+    console.log("About to send to imgbb");
+    const res = await axios({
+      method: "post",
+      url: "https://api.imgbb.com/1/upload",
+      data: body,
+    });
+    imgbbURL_1 = res.data.data.display_url;
 
-    fetch(myRequest)
-      .then(function (response) {
-        return response;
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (e) {
-        console.log(e);
-      });
+    let body2 = new FormData();
+    body2.set("key", "2d87cb340c2a1c5dec37b002b8dd644f");
+    body2.append("image", photo_2_url);
+    console.log("About to send to imgbb2");
+    const res2 = await axios({
+      method: "post",
+      url: "https://api.imgbb.com/1/upload",
+      data: body2,
+    });
+    imgbbURL_2 = res2.data.data.display_url;
   } catch (error) {
     console.log(error);
   }
 
-  // await axios.default
-  //   .post(`${baseURL}photos`, {
-  //     userid: userid,
-  //     photo_1_url: photo_1_url.name,
-  //     photo_2_url: photo_2_url.name,
-  //     votes_limits: votes_limit,
-  //   })
-  //   .then((res) => {
-  //     console.log("Successfully sent photos");
-  //     console.log(JSON.stringify(res));
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
+  await axios.default
+    .post(`${baseURL}photos`, {
+      userid: userid,
+      photo_1_url: imgbbURL_1,
+      photo_2_url: imgbbURL_2,
+      votes_limits: votes_limit,
+    })
+    .then((res) => {
+      console.log("Successfully sent photos");
+      console.log(JSON.stringify(res));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 // async function uploadToS3(file) {
