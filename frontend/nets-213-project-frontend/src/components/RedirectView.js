@@ -28,6 +28,7 @@ class RedirectView extends React.Component {
       redirectToWorker: false,
       showDialog: false,
       workerId: "",
+      count: 0,
     };
   }
   render() {
@@ -35,7 +36,11 @@ class RedirectView extends React.Component {
       return <Redirect to="/user"></Redirect>;
     }
     if (this.state.redirectToWorker) {
-      return <Redirect to={`/mturk/${this.state.workerId}`}></Redirect>;
+      return (
+        <Redirect
+          to={`/mturk/${this.state.workerId}?count=${this.state.count}`}
+        ></Redirect>
+      );
     }
     return (
       <div>
@@ -81,7 +86,9 @@ class RedirectView extends React.Component {
             <DialogActions>
               <Button
                 onClick={async () => {
-                  await logWorker(this.state.workerId);
+                  let count = await logWorker(this.state.workerId);
+                  // console.log("UMBRELLA: " + JSON.stringify(count));
+                  this.setState({ count: count.data.count });
                   if (
                     this.state.workerId.length === 14 &&
                     this.state.workerId.match(/^[A-Za-z0-9]+$/)

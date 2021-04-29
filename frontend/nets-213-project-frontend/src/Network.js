@@ -51,20 +51,19 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
     console.log(error);
   }
 
-  await axios.default
+  let bigRes = await axios.default
     .post(`${baseURL}photos`, {
       userid: userid,
       photo_1_url: imgbbURL_1,
       photo_2_url: imgbbURL_2,
       votes_limits: votes_limit,
     })
-    .then((res) => {
-      console.log("Successfully sent photos");
-      console.log(JSON.stringify(res));
-    })
     .catch((error) => {
       console.log(error);
     });
+  console.log("Successfully sent photos");
+  console.log(JSON.stringify(bigRes));
+  return bigRes.data ?? 0;
 }
 
 // async function uploadToS3(file) {
@@ -93,21 +92,25 @@ async function sendVote(userid, picture_voted, comments) {
     });
 }
 
-async function getJobs() {
+async function getJobs(count) {
   let jobList = [];
   try {
-    jobList = await axios.default.get(`${baseURL}jobs`);
+    jobList = await axios.default.get(`${baseURL}jobs`, { count: count });
   } catch (error) {
     console.log("ERROR: " + error);
   }
-  return jobList;
+  console.log("JobList: " + JSON.stringify(jobList.data));
+  return jobList.data;
 }
 
 async function getVotes(jobId) {
+  console.log("THIS IS THE JOBID @ getVotes(): " + jobId);
   let votingData = {};
   // TODO: use jobId
   try {
-    votingData = await axios.default.get(`${baseURL}votes`, { job_id: jobId });
+    votingData = await axios.default.get(`${baseURL}votes`, {
+      params: { job_id: jobId },
+    });
   } catch (error) {
     console.log("ERROR: " + error);
   }
@@ -115,17 +118,14 @@ async function getVotes(jobId) {
 }
 
 async function logWorker(workerId) {
-  await axios.default
+  let ret = await axios.default
     .post(`${baseURL}test5`, {
       user_id: workerId,
-    })
-    .then((res) => {
-      console.log("Successfully logged Worker");
-      // console.log(JSON.stringify(res));
     })
     .catch((error) => {
       console.log(error);
     });
+  return ret;
 }
 
 export { sendPhotos, sendVote, getJobs, getVotes, logWorker };

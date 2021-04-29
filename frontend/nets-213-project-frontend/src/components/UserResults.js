@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid, LinearProgress, Chip } from "@material-ui/core";
-// import getVotes from "../Network";
+import { getVotes } from "../Network";
 
 class UserResults extends React.Component {
   constructor(props) {
@@ -10,25 +10,30 @@ class UserResults extends React.Component {
       outfitB: 0,
       totalVotes: 0,
       pollInterval: null,
-      comments: [],
+      comments: [""],
     };
     this.pollVotes = this.pollVotes.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let intervalId = setInterval(this.pollVotes, 5000);
     this.setState({ pollInterval: intervalId });
-    this.pollVotes();
+    await this.pollVotes();
   }
 
   async pollVotes() {
-    //TODO: let results = await getVotes(this.props.UserId)
-    let results = {
-      // MOCK
-      Votes_photo_1: 0,
-      Votes_photo_2: 0,
-      Comments: [],
-    };
+    console.log("USERID: " + this.props.UserId);
+    let theResults = await getVotes(this.props.UserId);
+    let results = theResults.data;
+    console.log("RESULTS: " + results);
+    console.log("RESULTS: " + JSON.stringify(results));
+    // let results = {
+    //   // MOCK
+    //   Votes_photo_1: 0,
+    //   Votes_photo_2: 0,
+    //   Comments: [],
+    // };
+
     let total = results.Votes_photo_1 + results.Votes_photo_2;
     let aNum = Math.floor((100.0 * results.Votes_photo_1) / total);
     let bNum = Math.floor((100.0 * results.Votes_photo_2) / total);
@@ -98,7 +103,7 @@ class UserResults extends React.Component {
           <br></br>
         </Container>
         <h4>Comments:</h4>
-        {this.state.comments.length === 0 ? <p>No comments to show.</p> : null}
+        {this.state.comments === null ? <p>No comments to show.</p> : null}
         {this.state.comments.map((comment, key) => (
           <Chip
             key={key}

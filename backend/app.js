@@ -15,6 +15,7 @@ const connector = mongoose.connect(string_thing, {
 });
 var aws = require("aws-sdk");
 const cors = require("cors");
+const { WellArchitected } = require("aws-sdk");
 //require('dotenv').config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
@@ -148,7 +149,7 @@ app.post("/photos", async (req, res) => {
     time: Date.now(),
     vote_limit: limit,
   });
-  new_job.save();
+  await new_job.save();
 
   // jobs[job_count] = {'user':userid,
   //                   'p1':photo1,
@@ -163,7 +164,10 @@ app.post("/photos", async (req, res) => {
 //modify to display votes
 app.get("/votes", async (req, res) => {
   //Define the endpoint
-  job_id = req.body.job_id;
+  job_id = req.query.job_id;
+  console.log("BODY: " + req.body);
+  console.log("BODY: " + JSON.stringify(req.body));
+  console.log("THIS IS THE SERVER JOBID: " + job_id);
   let response = await question.findOne({ qID: job_id });
   if (response) {
     q1s = 0;
@@ -232,11 +236,13 @@ app.get("/test3", async (req, res) => {
 });
 
 //send workers new jobs
-app.get("/test4", async (req, res) => {
+app.get("/jobs", async (req, res) => {
   //Define the endpoint
 
-  last_job_id = req.query.job_id;
-  new_jobs = await question.find({ qID: { $gt: last_job_id } });
+  // last_job_id = req.query.job_id;
+  count = req.body.count;
+  console.log("server count" + count);
+  new_jobs = await question.find({ qID: { $gt: -1 } });
   if (new_jobs) {
     return res.json(new_jobs);
   } else {
@@ -249,8 +255,9 @@ app.post("/test5", async (req, res) => {
   //Define the endpoint
   userid = req.body.user_id;
   l = await worker.findOne({ id: userid });
+  count = (await question.countDocuments()) - 1;
   if (l) {
-    return res.json("was already here");
+    return res.json({ message: "was already here", count: count });
   } else {
     var new_worker = new worker({
       id: userid,
@@ -259,8 +266,9 @@ app.post("/test5", async (req, res) => {
       qs_answered: [],
     });
     response = await new_worker.save();
+
     if (response) {
-      return res.json("gottem");
+      return res.json({ count: count });
     } else {
       return res.json("oops");
     }

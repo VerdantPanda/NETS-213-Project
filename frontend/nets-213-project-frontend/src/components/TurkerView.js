@@ -8,39 +8,25 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import JobView from "./JobView";
+import { sendVote, getJobs } from "../Network";
 
 class TurkerView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       jobs: [
-        {
-          userid: 12345,
-          photo_1_url:
-            "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
-          photo_2_url:
-            "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
-          votes_limit: 1,
-        },
-        {
-          userid: 54321,
-          photo_1_url:
-            "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
-          photo_2_url:
-            "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
-          votes_limit: 1,
-        },
-        {
-          userid: 53435,
-          photo_1_url:
-            "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
-          photo_2_url:
-            "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
-          votes_limit: 1,
-        },
+        // {
+        //   userid: 12345,
+        //   photo_1_url:
+        //     "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
+        //   photo_2_url:
+        //     "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
+        //   votes_limit: 1,
+        // },
       ],
       doneJobIds: [],
       intervalId: 0,
+      count: 0,
     };
 
     this.getJobToDelete = this.getJobToDelete.bind(this);
@@ -51,38 +37,55 @@ class TurkerView extends React.Component {
     let oldJobsList = [viewsKey];
     const newOldJobsArray = this.state.doneJobIds.concat(oldJobsList);
     this.setState({ doneJobIds: newOldJobsArray });
-    const newList = this.state.jobs.filter((job) => job.userid !== viewsKey);
+    const newList = this.state.jobs.filter((job) => job.qID !== viewsKey);
     this.setState({ jobs: newList });
   }
 
-  requestNewJobs() {
-    let newJobs = [
-      {
-        userid: 5343445,
-        photo_1_url:
-          "https://i0.wp.com/bloggers.society19.com/wp-content/uploads/2015/11/Minimal-and-classy-Winter-outfits-mens-should-try_.jpg?resize=550%2C823&ssl=1",
-        photo_2_url:
-          "https://onpointfresh.com/wp-content/uploads/2016/08/tumblr_o379krD8hq1uceufyo1_1280.jpg",
-        votes_limit: 1,
-      },
-    ];
-
-    // TODO: Axios call
-    console.log("mock AXIOS call request new jobs");
-
-    let newJobArray = this.state.jobs
-      .concat(newJobs)
-      .filter((job) => !this.state.doneJobIds.includes(job.userid)); // Ensures old jobs dont show up again to turker
-    this.setState({ jobs: newJobArray });
-    if (true) {
+  async requestNewJobs() {
+    if (this.state.jobs.length > 5) {
       // TODO: end condition for set interval
       clearInterval(this.state.intervalId);
     }
+    let newJobs = [];
+
+    console.log("THIS IS COUNT: " + this.state.count);
+    // TODO: Axios call
+    newJobs = await getJobs(this.state.count);
+
+    // console.log("mock AXIOS call request new jobs");
+    let newJobArray = newJobs;
+    console.log("PREFILTER: " + JSON.stringify(newJobArray));
+    newJobArray = newJobArray
+      .filter((job) => !this.state.doneJobIds.includes(job.qID))
+      .filter(
+        (job) => !this.state.jobs.map((job1) => job1.qID).includes(job.qID)
+      )
+      .filter((job) => job.qID > this.state.count); // Ensures old jobs dont show up again to turker
+    console.log("POSTFILTER: " + JSON.stringify(newJobArray));
+    console.log("CURRENT STATE: " + JSON.stringify(this.state.jobs));
+
+    let newCount = this.state.count;
+    for (var i = 0; i < newJobArray.length; i++) {
+      if (newJobArray[i].qId > newCount) {
+        newCount = newJobArray[i].qId;
+        console.log("new pic found");
+      } else {
+        console.log("no new pic found");
+      }
+    }
+
+    // this.setState({ count: newCount, jobs: newJobArray });
+    this.setState((prevState, props) => ({
+      jobs: prevState.jobs.concat(newJobArray),
+      count: newCount,
+    }));
   }
 
   componentDidMount() {
     const intervalId = setInterval(this.requestNewJobs, 5000);
     this.setState({ intervalId: intervalId });
+    let count = parseInt(this.props.location.search.split("count=")[1]);
+    this.setState({ count: count });
   }
 
   render() {
@@ -124,11 +127,11 @@ class TurkerView extends React.Component {
             {this.state.jobs.length > 0 ? (
               this.state.jobs.map((elem, key) => {
                 return (
-                  <div key={elem.userid}>
+                  <div key={elem.qID}>
                     <JobView
-                      photo_1={elem.photo_1_url}
-                      photo_2={elem.photo_2_url}
-                      userid={elem.userid}
+                      photo_1={elem.image1}
+                      photo_2={elem.image2}
+                      userid={elem.qID}
                       viewKey={key}
                       sendJobsToDelete={this.getJobToDelete}
                     ></JobView>

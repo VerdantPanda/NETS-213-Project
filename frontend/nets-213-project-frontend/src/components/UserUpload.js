@@ -18,7 +18,7 @@ import { sendPhotos } from "../Network";
 class UserUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { speed: "", files: [], submitReady: false };
+    this.state = { speed: "", files: [], submitReady: false, jobNum: 0 };
   }
 
   handleUpload(ev) {
@@ -73,7 +73,7 @@ class UserUpload extends React.Component {
 
   render() {
     if (this.state.submitReady) {
-      return <UserResults UserId={this.props.UserId}></UserResults>;
+      return <UserResults UserId={this.state.jobNum}></UserResults>;
     }
     return (
       <div>
@@ -154,13 +154,13 @@ class UserUpload extends React.Component {
               } else {
                 // await uploadToS3(this.state.files[0]);
                 // await uploadToS3(this.state.files[1]);
-                await sendPhotos(
+                let myNum = await sendPhotos(
                   this.props.UserId,
                   this.state.files[0],
                   this.state.files[1],
                   10
                 );
-                this.setState({ submitReady: true });
+                this.setState({ submitReady: true, jobNum: myNum });
               }
             }}
           >
