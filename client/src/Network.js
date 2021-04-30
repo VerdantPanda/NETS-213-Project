@@ -1,7 +1,7 @@
 // import S3FileUpload from "react-s3";
 const axios = require("axios");
-const baseURL = "http://localhost:5000/";
-// const baseURL = "/api/";
+// const baseURL = "http://localhost:5000/";
+const baseURL = "/api/";
 
 async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
   let imgbbURL_1 = "";
@@ -63,7 +63,11 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
     });
   console.log("Successfully sent photos");
   console.log(JSON.stringify(bigRes));
-  return bigRes.data ?? 0;
+  return {
+    myNum: bigRes.data ?? 0,
+    pic_1_url: imgbbURL_1,
+    pic_2_url: imgbbURL_2,
+  };
 }
 
 // async function uploadToS3(file) {
@@ -76,11 +80,12 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
 //   return res.location;
 // }
 
-async function sendVote(userid, picture_voted, comments) {
+async function sendVote(jobid, worker_id, picture_voted, comments) {
   await axios.default
     .post(`${baseURL}vote`, {
-      userid: userid,
-      picture_vote: picture_voted,
+      job_id: jobid,
+      worker_id: worker_id,
+      picture_voted: picture_voted,
       comments: comments,
     })
     .then((res) => {

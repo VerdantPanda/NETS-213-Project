@@ -59,16 +59,26 @@ class UserResults extends React.Component {
           <Grid container spacing={10} justify="center">
             <Grid item>
               <h3>A</h3>
-              <div
+              {/* <div
                 style={{ height: 200, width: 200, backgroundColor: "gray" }}
-              ></div>
+              ></div> */}
+              <img
+                alt="pic_1_url"
+                src={this.props.pic_1_url}
+                style={{ height: 200, width: 200 }}
+              ></img>
             </Grid>
             <Grid item>
               <div>
                 <h3>B</h3>
-                <div
+                {/* <div
                   style={{ height: 200, width: 200, backgroundColor: "gray" }}
-                ></div>
+                ></div> */}
+                <img
+                  alt="pic_2_url"
+                  src={this.props.pic_2_url}
+                  style={{ height: 200, width: 200 }}
+                ></img>
               </div>
             </Grid>
           </Grid>

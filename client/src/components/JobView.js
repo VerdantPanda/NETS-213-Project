@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, Container } from "@material-ui/core";
 import JobViewImg from "./JobViewImg";
-// import { sendVote } from "../Network";
+import { sendVote } from "../Network";
 class JobView extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ class JobView extends React.Component {
           <Button
             variant="outlined"
             style={{ color: "white" }}
-            onClick={() => {
+            onClick={async () => {
               if (this.state.submitImg > 0) {
                 console.log("Mock submission axios call");
                 // console.log(
@@ -70,7 +70,12 @@ class JobView extends React.Component {
                 //   })
                 // );
                 // TODO: Axios call
-                // sendVote()
+                await sendVote(
+                  this.props.userid,
+                  this.props.workerId,
+                  this.state.submitImg,
+                  this.state.textDesc
+                );
                 this.props.sendJobsToDelete(this.props.userid);
               } else {
                 alert("You must select an outfit before submitting!");

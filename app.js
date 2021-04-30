@@ -15,6 +15,7 @@ const connector = mongoose.connect(string_thing, {
 });
 var aws = require("aws-sdk");
 const cors = require("cors");
+
 const { WellArchitected } = require("aws-sdk");
 //require('dotenv').config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
@@ -34,9 +35,10 @@ const uri = process.env.ATLAS_URI;
 
 app.use(express.json()); //allows us to access request body as req.body
 app.use(morgan("dev")); //enable incoming request logging in dev mode
+app.use(express.static(path.join(__dirname, "./client/build")));
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   //Define the endpoint
 
   return res.send({
@@ -46,7 +48,7 @@ app.get("/", (req, res) => {
 
 jobs = {};
 
-app.post("/photo", (req, res) => {
+app.post("/api/photo", (req, res) => {
   console.log(req.body);
   console.log("hi");
   userid = req.body.user_id;
@@ -129,7 +131,7 @@ counter = 0;
 // });
 
 //modify for photos
-app.post("/photos", async (req, res) => {
+app.post("/api/photos", async (req, res) => {
   //Define the endpoint
   // await client.connect();
   // const database = client.db('myFirstDatabase')
@@ -162,7 +164,7 @@ app.post("/photos", async (req, res) => {
 });
 
 //modify to display votes
-app.get("/votes", async (req, res) => {
+app.get("/api/votes", async (req, res) => {
   //Define the endpoint
   job_id = req.query.job_id;
   console.log("BODY: " + req.body);
@@ -180,7 +182,7 @@ app.get("/votes", async (req, res) => {
       } else {
         q2s += 1;
       }
-      comments.push(v.comments);
+      comments.push(vs[i].comments);
     }
     return res.json({
       Votes_photo_1: q1s,
@@ -194,12 +196,12 @@ app.get("/votes", async (req, res) => {
 });
 
 //modify to get worker votes
-app.get("/test3", async (req, res) => {
+app.post("/api/vote", async (req, res) => {
   //Define the endpoint
-  job_id = req.query.job_id;
-  worker_id = req.query.worker_id;
-  resp = req.query.response;
-  comments = req.query.comments;
+  job_id = req.body.job_id;
+  worker_id = req.body.worker_id;
+  resp = req.body.picture_voted;
+  comments = req.body.comments;
 
   var stuff = {
     worker_id: worker_id,
@@ -236,7 +238,7 @@ app.get("/test3", async (req, res) => {
 });
 
 //send workers new jobs
-app.get("/jobs", async (req, res) => {
+app.get("/api/jobs", async (req, res) => {
   //Define the endpoint
 
   // last_job_id = req.query.job_id;
@@ -251,7 +253,7 @@ app.get("/jobs", async (req, res) => {
 });
 
 //send workers new jobs
-app.post("/test5", async (req, res) => {
+app.post("/api/test5", async (req, res) => {
   //Define the endpoint
   userid = req.body.user_id;
   l = await worker.findOne({ id: userid });
@@ -276,12 +278,17 @@ app.post("/test5", async (req, res) => {
 });
 
 //modify to get worker votes
-app.get("/testjobs", (req, res) => {
+app.get("/api/testjobs", (req, res) => {
   //Define the endpoint
   console.log(jobs);
   return res.send({
     status: "Healthy",
   });
+});
+
+// Root endpoint
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 app.listen(PORT, () => {

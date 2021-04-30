@@ -132,6 +132,7 @@ class TurkerView extends React.Component {
                       photo_1={elem.image1}
                       photo_2={elem.image2}
                       userid={elem.qID}
+                      workerId={this.props.match.params.id}
                       viewKey={key}
                       sendJobsToDelete={this.getJobToDelete}
                     ></JobView>

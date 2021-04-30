@@ -18,7 +18,14 @@ import { sendPhotos } from "../Network";
 class UserUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { speed: "", files: [], submitReady: false, jobNum: 0 };
+    this.state = {
+      speed: "",
+      files: [],
+      submitReady: false,
+      jobNum: 0,
+      pic_1_url: "",
+      pic_2_url: "",
+    };
   }
 
   handleUpload(ev) {
@@ -73,7 +80,13 @@ class UserUpload extends React.Component {
 
   render() {
     if (this.state.submitReady) {
-      return <UserResults UserId={this.state.jobNum}></UserResults>;
+      return (
+        <UserResults
+          UserId={this.state.jobNum}
+          pic_1_url={this.state.pic_1_url}
+          pic_2_url={this.state.pic_2_url}
+        ></UserResults>
+      );
     }
     return (
       <div>
@@ -113,7 +126,7 @@ class UserUpload extends React.Component {
                     style={{ height: 100, width: 100, backgroundColor: "gray" }}
                   ></div>
                 ) : (
-                  <div>Some pics //TODO:</div>
+                  <div>Pictures ready to upload!</div>
                 )}
               </div>
             </Grid>
@@ -154,13 +167,18 @@ class UserUpload extends React.Component {
               } else {
                 // await uploadToS3(this.state.files[0]);
                 // await uploadToS3(this.state.files[1]);
-                let myNum = await sendPhotos(
+                let myObj = await sendPhotos(
                   this.props.UserId,
                   this.state.files[0],
                   this.state.files[1],
                   10
                 );
-                this.setState({ submitReady: true, jobNum: myNum });
+                this.setState({
+                  submitReady: true,
+                  jobNum: myObj.myNum,
+                  pic_1_url: myObj.pic_1_url,
+                  pic_2_url: myObj.pic_2_url,
+                });
               }
             }}
           >
