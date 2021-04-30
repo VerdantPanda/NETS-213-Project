@@ -38,7 +38,7 @@ class RedirectView extends React.Component {
     if (this.state.redirectToWorker) {
       return (
         <Redirect
-          to={`/mturk/${this.state.workerId}?count=${this.state.count}`}
+          to={`/mturk/${this.state.workerId}?count=${this.state.count ?? 0}`}
         ></Redirect>
       );
     }
