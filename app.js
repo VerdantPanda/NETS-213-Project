@@ -24,7 +24,7 @@ aws.config.update({
   accessKeyId: process.env.AWSAccessKeyId,
   secretAccessKey: process.env.AWSSecretKey,
 });
-
+//for deploy
 const S3_BUCKET = process.env.bucket;
 
 const app = express(); //Create new instance
