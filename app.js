@@ -7,6 +7,7 @@ const questionSchema = require("./Schemas/Question.model.js");
 const answer = mongoose.model("answer", answerSchema, "answer");
 const worker = mongoose.model("worker", workerSchema, "workers");
 const question = mongoose.model("question", questionSchema, "questions");
+const path = require("path");
 string_thing =
   "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const connector = mongoose.connect(string_thing, {
@@ -17,7 +18,7 @@ var aws = require("aws-sdk");
 const cors = require("cors");
 
 const { WellArchitected } = require("aws-sdk");
-//require('dotenv').config(); // Configure dotenv to load in the .env file
+require("dotenv").config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
   region: "us-east-1", // Put your aws region here
