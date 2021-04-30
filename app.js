@@ -10,9 +10,9 @@ const question = mongoose.model("question", questionSchema, "questions");
 const path = require("path");
 require("dotenv").config(); // Configure dotenv to load in the .env file
 
-// const string_thing =
-//   "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const uri = process.env.ATLAS_URI;
+const string_thing =
+  "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const string_thing = process.env.ATLAS_URI;
 mongoose
   .connect(string_thing, {
     useNewUrlParser: true,
