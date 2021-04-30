@@ -8,31 +8,39 @@ const answer = mongoose.model("answer", answerSchema, "answer");
 const worker = mongoose.model("worker", workerSchema, "workers");
 const question = mongoose.model("question", questionSchema, "questions");
 const path = require("path");
-string_thing =
-  "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const connector = mongoose.connect(string_thing, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+require("dotenv").config(); // Configure dotenv to load in the .env file
+
+// const string_thing =
+//   "mongodb+srv://dbUser:nets213@cluster0.wxprm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.ATLAS_URI;
+mongoose
+  .connect(string_thing, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((res) => console.log("Connected to DB"))
+  .catch((err) => console.log(err));
+const { connection } = mongoose;
+connection.once("open", () => {
+  console.log("MongoDB database connection established successfully");
 });
-var aws = require("aws-sdk");
+
+// var aws = require("aws-sdk");
 const cors = require("cors");
 
-const { WellArchitected } = require("aws-sdk");
-require("dotenv").config(); // Configure dotenv to load in the .env file
+// const { WellArchitected } = require("aws-sdk");
 // Configure aws with your accessKeyId and your secretAccessKey
-aws.config.update({
-  region: "us-east-1", // Put your aws region here
-  accessKeyId: process.env.AWSAccessKeyId,
-  secretAccessKey: process.env.AWSSecretKey,
-});
+// aws.config.update({
+//   region: "us-east-1", // Put your aws region here
+//   accessKeyId: process.env.AWSAccessKeyId,
+//   secretAccessKey: process.env.AWSSecretKey,
+// });
 //for deploy
-const S3_BUCKET = process.env.bucket;
+// const S3_BUCKET = process.env.bucket;
 
 const app = express(); //Create new instance
 
 const PORT = process.env.PORT || 5000; //Declare the port number
-
-const uri = process.env.ATLAS_URI;
 
 app.use(express.json()); //allows us to access request body as req.body
 app.use(morgan("dev")); //enable incoming request logging in dev mode
