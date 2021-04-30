@@ -15,6 +15,7 @@ import RedirectView from "./components/RedirectView";
 //   </React.StrictMode>,
 //   document.getElementById("root")
 // );
+document.title = "Second Opinion";
 const routing = (
   <Router>
     <div>
