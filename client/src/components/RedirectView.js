@@ -90,7 +90,8 @@ class RedirectView extends React.Component {
                   // console.log("UMBRELLA: " + JSON.stringify(count));
                   this.setState({ count: count.data.count });
                   if (
-                    this.state.workerId.length === 14 &&
+                    (this.state.workerId.length === 14 ||
+                      this.state.workerId.length === 13) &&
                     this.state.workerId.match(/^[A-Za-z0-9]+$/)
                   ) {
                     this.setState({
