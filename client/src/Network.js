@@ -144,4 +144,22 @@ async function logSessionEnd(worker_id) {
     });
 }
 
-export { sendPhotos, sendVote, getJobs, getVotes, logWorker, logSessionEnd };
+async function getWorkerCount() {
+  let ret = {};
+  try {
+    ret = await axios.default.get(`${baseURL}num_users`);
+  } catch (error) {
+    console.log(error);
+  }
+  return ret;
+}
+
+export {
+  sendPhotos,
+  sendVote,
+  getJobs,
+  getVotes,
+  logWorker,
+  logSessionEnd,
+  getWorkerCount,
+};

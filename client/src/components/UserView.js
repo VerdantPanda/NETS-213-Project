@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Container, Grid, AppBar, Toolbar } from "@material-ui/core";
 import UserUpload from "./UserUpload";
+import { getWorkerCount } from "../Network";
 
 //  This is the page that users see
 class UserView extends React.Component {
@@ -9,13 +10,28 @@ class UserView extends React.Component {
     this.state = {
       postPhase: false,
       UserId: Math.random().toString(16).substr(2, 10),
+      workerCount: 0,
     };
+
+    this.updateOnlineUsers = this.updateOnlineUsers.bind(this);
   }
+
+  async componentDidMount() {
+    setInterval(this.updateOnlineUsers, 5000);
+  }
+
+  async updateOnlineUsers() {
+    let count = await getWorkerCount();
+    this.setState({ workerCount: count.data });
+    console.log("user count: " + JSON.stringify(count.data));
+  }
+
   render() {
     return (
       <div>
         <AppBar position="static" style={{ backgroundColor: "#4A8790" }}>
           <Toolbar>
+            {this.state.workerCount} workers online
             <Grid container justify="flex-end">
               <Button
                 edge="end"
