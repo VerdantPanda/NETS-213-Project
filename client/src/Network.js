@@ -133,4 +133,15 @@ async function logWorker(workerId) {
   return ret;
 }
 
-export { sendPhotos, sendVote, getJobs, getVotes, logWorker };
+async function logSessionEnd(worker_id) {
+  await axios.default
+    .post(`${baseURL}end`, {
+      time: Date.now,
+      worker_id: worker_id,
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export { sendPhotos, sendVote, getJobs, getVotes, logWorker, logSessionEnd };
