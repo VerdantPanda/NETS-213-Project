@@ -58,6 +58,7 @@ app.get("/api", (req, res) => {
 
 jobs = {};
 
+num_users = 0
 app.post("/api/photo", (req, res) => {
   console.log(req.body);
   console.log("hi");
@@ -262,10 +263,15 @@ app.get("/api/jobs", async (req, res) => {
   }
 });
 
+app.get("/api/num_users", async (req, res) => {
+  return res.json(num_users);
+
+});
+
 //get logout
 app.post("/api/end", async (req, res) => {
   //Define the endpoint
-
+  num_users -= 1
   // last_job_id = req.query.job_id;
   t = req.body.time;
   wid = req.body.worker_id
@@ -290,6 +296,7 @@ app.post("/api/end", async (req, res) => {
 app.post("/api/test5", async (req, res) => {
   //Define the endpoint
   userid = req.body.user_id;
+  num_users += 1
   l = await worker.findOne({ id: userid });
   count = (await question.countDocuments()) - 1;
   if (l) {
