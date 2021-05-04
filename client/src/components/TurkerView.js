@@ -28,6 +28,7 @@ class TurkerView extends React.Component {
       intervalId: 0,
       count: 0,
       endSessionClicked: false,
+      sessionCode: "",
     };
 
     this.getJobToDelete = this.getJobToDelete.bind(this);
@@ -86,7 +87,10 @@ class TurkerView extends React.Component {
     const intervalId = setInterval(this.requestNewJobs, 5000);
     this.setState({ intervalId: intervalId });
     let count = parseInt(this.props.location.search.split("count=")[1]);
-    this.setState({ count: count });
+    this.setState({
+      count: count,
+      sessionCode: Math.random().toString(16).substr(2, 10),
+    });
   }
 
   render() {
@@ -126,69 +130,76 @@ class TurkerView extends React.Component {
             disabled={this.state.endSessionClicked}
             onClick={async (e) => {
               await logSessionEnd(this.props.match.params.id);
-              alert(
-                `Your confirmation code is: \n${Math.random()
-                  .toString(16)
-                  .substr(2, 10)}`
-              );
+
               this.setState({ endSessionClicked: true });
             }}
           >
             End Session!
           </Button>
+          <br></br>
+          <br></br>
+          {this.state.endSessionClicked ? (
+            <div>
+              Your confirmation code is: <b>{this.state.sessionCode}</b>
+            </div>
+          ) : null}
 
-          <br></br>
-          <br></br>
-          <br></br>
-          <h3>NEW POLLS</h3>
+          {!this.state.endSessionClicked ? (
+            <div>
+              <br></br>
+              <br></br>
+              <br></br>
+              <h3>NEW POLLS</h3>
 
-          <Container
-            maxWidth="sm"
-            style={{
-              overflow: "auto",
-              maxHeight: "650px",
-            }}
-          >
-            {this.state.jobs.length > 0 ? (
-              this.state.jobs.map((elem, key) => {
-                return (
-                  <div key={elem.qID}>
-                    <JobView
-                      photo_1={elem.image1}
-                      photo_2={elem.image2}
-                      userid={elem.qID}
-                      workerId={this.props.match.params.id}
-                      viewKey={key}
-                      sendJobsToDelete={this.getJobToDelete}
-                    ></JobView>
-                    <br></br>
-                    <br></br>
+              <Container
+                maxWidth="sm"
+                style={{
+                  overflow: "auto",
+                  maxHeight: "650px",
+                }}
+              >
+                {this.state.jobs.length > 0 ? (
+                  this.state.jobs.map((elem, key) => {
+                    return (
+                      <div key={elem.qID}>
+                        <JobView
+                          photo_1={elem.image1}
+                          photo_2={elem.image2}
+                          userid={elem.qID}
+                          workerId={this.props.match.params.id}
+                          viewKey={key}
+                          sendJobsToDelete={this.getJobToDelete}
+                        ></JobView>
+                        <br></br>
+                        <br></br>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div>
+                    <p>No new jobs currently available.</p>
+                    <CircularProgress />
                   </div>
-                );
-              })
-            ) : (
-              <div>
-                <p>No new jobs currently available.</p>
-                <CircularProgress />
-              </div>
-            )}
-          </Container>
-          <br></br>
-          <br></br>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => {
-              window.open(
-                "https://www.google.com/search?q=how+to+choose+an+outfit",
-                "_blank"
-              );
-            }}
-          >
-            Need Help?
-          </Button>
-          <br></br>
-          <br></br>
+                )}
+              </Container>
+              <br></br>
+              <br></br>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  window.open(
+                    "https://www.google.com/search?q=how+to+choose+an+outfit",
+                    "_blank"
+                  );
+                }}
+              >
+                Need Help?
+              </Button>
+              <br></br>
+              <br></br>
+            </div>
+          ) : null}
         </Container>
       </div>
     );
