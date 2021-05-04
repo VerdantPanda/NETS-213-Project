@@ -27,6 +27,7 @@ connection.once("open", () => {
 
 // var aws = require("aws-sdk");
 const cors = require("cors");
+const { time } = require("console");
 
 // const { WellArchitected } = require("aws-sdk");
 // Configure aws with your accessKeyId and your secretAccessKey
@@ -261,6 +262,30 @@ app.get("/api/jobs", async (req, res) => {
   }
 });
 
+//get logout
+app.post("/api/end", async (req, res) => {
+  //Define the endpoint
+
+  // last_job_id = req.query.job_id;
+  t = req.body.time;
+  wid = req.body.worker_id
+  updated = await worker.updateOne(
+    {id : wid },
+    {
+      $push: {
+        time_left: Date.now(),
+      },
+    }
+  );
+  if (updated) {
+    return res.send({
+      status: 200,
+    });
+  } else {
+    return res.json("error? end");
+  }
+});
+
 //send workers new jobs
 app.post("/api/test5", async (req, res) => {
   //Define the endpoint
@@ -268,12 +293,20 @@ app.post("/api/test5", async (req, res) => {
   l = await worker.findOne({ id: userid });
   count = (await question.countDocuments()) - 1;
   if (l) {
+    updated = await worker.updateOne(
+      {id : userid },
+      {
+        $push: {
+          time_entered: Date.now(),
+        },
+      }
+    );
     return res.json({ message: "was already here", count: count });
   } else {
     var new_worker = new worker({
       id: userid,
-      time_entered: Date.now(),
-      time_left: Date.now(),
+      time_entered: [Date.now()],
+      time_left: [],
       qs_answered: [],
     });
     response = await new_worker.save();
