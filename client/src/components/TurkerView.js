@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import JobView from "./JobView";
-import { sendVote, getJobs } from "../Network";
+import { getJobs, logSessionEnd } from "../Network";
 
 class TurkerView extends React.Component {
   constructor(props) {
@@ -27,6 +27,7 @@ class TurkerView extends React.Component {
       doneJobIds: [],
       intervalId: 0,
       count: 0,
+      endSessionClicked: false,
     };
 
     this.getJobToDelete = this.getJobToDelete.bind(this);
@@ -50,7 +51,7 @@ class TurkerView extends React.Component {
 
     console.log("THIS IS COUNT: " + this.state.count);
     // TODO: Axios call
-    newJobs = await getJobs(this.state.count);
+    newJobs = (await getJobs(this.state.count)) ?? [];
 
     // console.log("mock AXIOS call request new jobs");
     let newJobArray = newJobs;
@@ -109,9 +110,38 @@ class TurkerView extends React.Component {
           <p>
             <b>INSTRUCTIONS:</b> These polls will involve photos of various
             outfits or clothing items. Please select the item that looks more
-            appealing to you, and enter a short comment explaining why.
+            appealing to you, and enter a short comment explaining why. Click
+            the "End Session!" button when you finish your session. This will
+            give you a code which you need to enter into MTurk to receive your
+            payment.
+            <br></br>
+            <span style={{ color: "red" }}>
+              If you do not click "End Session!" you will not recieve a payment!
+            </span>
           </p>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ backgroundColor: "orange" }}
+            disabled={this.state.endSessionClicked}
+            onClick={async (e) => {
+              await logSessionEnd(this.props.match.params.id);
+              alert(
+                `Your confirmation code is: \n${Math.random()
+                  .toString(16)
+                  .substr(2, 10)}`
+              );
+              this.setState({ endSessionClicked: true });
+            }}
+          >
+            End Session!
+          </Button>
+
+          <br></br>
+          <br></br>
+          <br></br>
           <h3>NEW POLLS</h3>
+
           <Container
             maxWidth="sm"
             style={{
