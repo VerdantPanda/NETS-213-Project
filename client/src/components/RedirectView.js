@@ -64,14 +64,22 @@ class RedirectView extends React.Component {
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">
-              Enter your Amazon Mechanical Turk Worker ID
+              {/* Enter your Amazon Mechanical Turk Worker ID */}
+              Thank you for participating!
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                In order to recieve proper compensation for your work you must
-                enter in your Worker ID.
+                {/* In order to recieve proper compensation for your work you must
+                enter in your Worker ID. */}
+                Anyone who submitted at least one vote will recieve payment.
+                Look out for similar HITs in the future. If you were unable to
+                recieve your code, submit the code below as your code and we
+                will compensate you via Amazon MTurk accordingly.
+                <br></br>
+                <br></br>
+                <b>Your code: 000000000000001</b>
               </DialogContentText>
-              <TextField
+              {/* <TextField
                 autoFocus
                 margin="dense"
                 id="name"
@@ -81,10 +89,10 @@ class RedirectView extends React.Component {
                 onChange={(e) => {
                   this.setState({ workerId: e.target.value });
                 }}
-              />
+              /> */}
             </DialogContent>
             <DialogActions>
-              <Button
+              {/* <Button
                 onClick={async () => {
                   let count = await logWorker(this.state.workerId);
                   // console.log("UMBRELLA: " + JSON.stringify(count));
@@ -105,7 +113,7 @@ class RedirectView extends React.Component {
                 color="primary"
               >
                 Submit
-              </Button>
+              </Button> */}
             </DialogActions>
           </Dialog>
 
