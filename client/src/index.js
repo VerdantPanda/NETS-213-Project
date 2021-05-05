@@ -32,7 +32,7 @@ const routing = (
       </Link>
 
       <Switch>
-        <Route path="/mturk/:id" component={TurkerView} />
+        {/* <Route path="/mturk/:id" component={TurkerView} /> */}
         <Route path="/user" component={UserView} />
         <Route path="/" component={RedirectView} />
       </Switch>
