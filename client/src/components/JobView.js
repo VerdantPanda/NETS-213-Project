@@ -60,8 +60,12 @@ class JobView extends React.Component {
             variant="outlined"
             style={{ color: "white" }}
             onClick={async () => {
-              if (this.state.submitImg > 0) {
-                console.log("Mock submission axios call");
+              if (this.state.submitImg === 0) {
+                alert("You must select an outfit before submitting!");
+              } else if (this.state.textDesc.length <= 2) {
+                alert("You must enter a comment before submitting!");
+              } else {
+                // console.log("Mock submission axios call");
                 // console.log(
                 //   JSON.stringify({
                 //     userid: this.props.userid,
@@ -77,8 +81,6 @@ class JobView extends React.Component {
                   this.state.textDesc
                 );
                 this.props.sendJobsToDelete(this.props.userid);
-              } else {
-                alert("You must select an outfit before submitting!");
               }
             }}
           >
