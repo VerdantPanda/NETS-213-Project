@@ -115,12 +115,14 @@ class TurkerView extends React.Component {
           }}
         >
           <p>
-            <b>INSTRUCTIONS:</b> These polls will involve photos of various
+            <b>INSTRUCTIONS:</b> Please wait here until new polls appear. 
+            These polls will involve photos of various
             outfits or clothing items. Please select the item that looks more
             appealing to you, and enter a short comment explaining why. After
             the 30 minute sesion has elapsed, the "End Session!" button will
             appear. This will give you a code which you need to enter into MTurk
-            to receive your payment.{" "}
+            to receive your payment. You will receive bonus payments based on the
+            timeliness of your answers, as well as the quality of your contributions.{" "}
             <span style={{ color: "red" }}>
               If you do not click "End Session!" you will not recieve a payment!
             </span>
