@@ -141,6 +141,23 @@ counter = 0;
 //   });
 // });
 
+app.post("/api/finalanswer", async (req, res) => {
+  questionId = req.body.qID;
+  decision = req.body.decision;
+  updated = await question.updateOne(
+    { id: questionId },
+    { $set: { true_answer: decision } }
+  );
+  if (updated) {
+    return res.send({
+      status: 200,
+    });
+  } else {
+    return res.json("error? end");
+  }
+});
+
+
 //modify for photos
 app.post("/api/photos", async (req, res) => {
   //Define the endpoint
