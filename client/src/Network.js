@@ -1,11 +1,11 @@
 // import S3FileUpload from "react-s3";
-const axios = require("axios");
+const axios = require('axios');
 // const baseURL = "http://localhost:5000/";
-const baseURL = "/api/";
+const baseURL = '/api/';
 
 async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
-  let imgbbURL_1 = "";
-  let imgbbURL_2 = "";
+  let imgbbURL_1 = '';
+  let imgbbURL_2 = '';
   try {
     // const res = await axios.default.post(
     //   "https://api.imgbb.com/1/upload",
@@ -27,23 +27,23 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
     //   "https://api.imgbb.com/1/upload?key=2d87cb340c2a1c5dec37b002b8dd644f&image=";
 
     let body = new FormData();
-    body.set("key", "2d87cb340c2a1c5dec37b002b8dd644f");
-    body.append("image", photo_1_url);
-    console.log("About to send to imgbb");
+    body.set('key', '2d87cb340c2a1c5dec37b002b8dd644f');
+    body.append('image', photo_1_url);
+    console.log('About to send to imgbb');
     const res = await axios({
-      method: "post",
-      url: "https://api.imgbb.com/1/upload",
+      method: 'post',
+      url: 'https://api.imgbb.com/1/upload',
       data: body,
     });
     imgbbURL_1 = res.data.data.display_url;
 
     let body2 = new FormData();
-    body2.set("key", "2d87cb340c2a1c5dec37b002b8dd644f");
-    body2.append("image", photo_2_url);
-    console.log("About to send to imgbb2");
+    body2.set('key', '2d87cb340c2a1c5dec37b002b8dd644f');
+    body2.append('image', photo_2_url);
+    console.log('About to send to imgbb2');
     const res2 = await axios({
-      method: "post",
-      url: "https://api.imgbb.com/1/upload",
+      method: 'post',
+      url: 'https://api.imgbb.com/1/upload',
       data: body2,
     });
     imgbbURL_2 = res2.data.data.display_url;
@@ -61,7 +61,7 @@ async function sendPhotos(userid, photo_1_url, photo_2_url, votes_limit) {
     .catch((error) => {
       console.log(error);
     });
-  console.log("Successfully sent photos");
+  console.log('Successfully sent photos');
   console.log(JSON.stringify(bigRes));
   return {
     myNum: bigRes.data ?? 0,
@@ -89,7 +89,7 @@ async function sendVote(jobid, worker_id, picture_voted, comments) {
       comments: comments,
     })
     .then((res) => {
-      console.log("Successfully sent vote");
+      console.log('Successfully sent vote');
       console.log(JSON.stringify(res));
     })
     .catch((error) => {
@@ -102,14 +102,14 @@ async function getJobs(count) {
   try {
     jobList = await axios.default.get(`${baseURL}jobs`, { count: count });
   } catch (error) {
-    console.log("ERROR: " + error);
+    console.log('ERROR: ' + error);
   }
-  console.log("JobList: " + JSON.stringify(jobList.data));
+  console.log('JobList: ' + JSON.stringify(jobList.data));
   return jobList.data;
 }
 
 async function getVotes(jobId) {
-  console.log("THIS IS THE JOBID @ getVotes(): " + jobId);
+  console.log('THIS IS THE JOBID @ getVotes(): ' + jobId);
   let votingData = {};
   // TODO: use jobId
   try {
@@ -117,7 +117,7 @@ async function getVotes(jobId) {
       params: { job_id: jobId },
     });
   } catch (error) {
-    console.log("ERROR: " + error);
+    console.log('ERROR: ' + error);
   }
   return votingData;
 }
@@ -154,6 +154,23 @@ async function getWorkerCount() {
   return ret;
 }
 
+async function sendFinalResponse(qId, decision) {
+  let ret = {};
+  try {
+    ret = await axios.default
+      .post(`${baseURL}finalanswer`, {
+        qID: qId,
+        decision: decision,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+  return ret;
+}
+
 export {
   sendPhotos,
   sendVote,
@@ -162,4 +179,5 @@ export {
   logWorker,
   logSessionEnd,
   getWorkerCount,
+  sendFinalResponse,
 };

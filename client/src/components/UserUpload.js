@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
   FormHelperText,
+  CircularProgress,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserResults from "./UserResults";
@@ -25,6 +26,7 @@ class UserUpload extends React.Component {
       jobNum: 0,
       pic_1_url: "",
       pic_2_url: "",
+      clickedSubmit: false,
     };
   }
 
@@ -156,34 +158,39 @@ class UserUpload extends React.Component {
           <br></br>
         </Container>
         <Container size="lg" style={{ textAlign: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={async () => {
-              if (this.state.speed === "") {
-                alert("You must select a speed!");
-              } else if (this.state.files.length !== 2) {
-                alert("You must upload exatly 2 photos!");
-              } else {
-                // await uploadToS3(this.state.files[0]);
-                // await uploadToS3(this.state.files[1]);
-                let myObj = await sendPhotos(
-                  this.props.UserId,
-                  this.state.files[0],
-                  this.state.files[1],
-                  10
-                );
-                this.setState({
-                  submitReady: true,
-                  jobNum: myObj.myNum,
-                  pic_1_url: myObj.pic_1_url,
-                  pic_2_url: myObj.pic_2_url,
-                });
-              }
-            }}
-          >
-            Submit
-          </Button>
+          {!this.state.clickedSubmit ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={async () => {
+                if (this.state.speed === "") {
+                  alert("You must select a speed!");
+                } else if (this.state.files.length !== 2) {
+                  alert("You must upload exatly 2 photos!");
+                } else {
+                  // await uploadToS3(this.state.files[0]);
+                  // await uploadToS3(this.state.files[1]);
+                  this.setState({ clickedSubmit: true });
+                  let myObj = await sendPhotos(
+                    this.props.UserId,
+                    this.state.files[0],
+                    this.state.files[1],
+                    10
+                  );
+                  this.setState({
+                    submitReady: true,
+                    jobNum: myObj.myNum,
+                    pic_1_url: myObj.pic_1_url,
+                    pic_2_url: myObj.pic_2_url,
+                  });
+                }
+              }}
+            >
+              Submit
+            </Button>
+          ) : (
+            <CircularProgress></CircularProgress>
+          )}
         </Container>
       </div>
     );

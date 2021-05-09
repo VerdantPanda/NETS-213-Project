@@ -38,6 +38,9 @@ class JobViewImg extends React.Component {
             <img
               src={this.props.photo_1}
               alt={this.props.photo_1}
+              onContextMenu={() => {
+                return false;
+              }}
               style={{
                 border: this.state.photo1Selected ? "5px solid white" : "",
                 borderRadius: this.state.photo1Selected ? "5px" : "",
@@ -63,6 +66,9 @@ class JobViewImg extends React.Component {
             <img
               src={this.props.photo_2}
               alt={this.props.photo_2}
+              onContextMenu={() => {
+                return false;
+              }}
               style={{
                 border: this.state.photo2Selected ? "5px solid white" : "",
                 borderRadius: this.state.photo2Selected ? "5px" : "",

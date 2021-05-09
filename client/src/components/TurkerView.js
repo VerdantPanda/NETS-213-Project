@@ -1,4 +1,5 @@
 import React from "react";
+import Countdown from "react-countdown";
 import {
   Button,
   Container,
@@ -29,6 +30,8 @@ class TurkerView extends React.Component {
       count: 0,
       endSessionClicked: false,
       sessionCode: "",
+      countDownDone: false,
+      countDownTime: Date.now() + 1800000,
     };
 
     this.getJobToDelete = this.getJobToDelete.bind(this);
@@ -112,32 +115,48 @@ class TurkerView extends React.Component {
           }}
         >
           <p>
-            <b>INSTRUCTIONS:</b> These polls will involve photos of various
+            <b>INSTRUCTIONS:</b> Please wait here until new polls appear. 
+            These polls will involve photos of various
             outfits or clothing items. Please select the item that looks more
-            appealing to you, and enter a short comment explaining why. Click
-            the "End Session!" button when you finish your session. This will
-            give you a code which you need to enter into MTurk to receive your
-            payment.
-            <br></br>
+            appealing to you, and enter a short comment explaining why. After
+            the 30 minute sesion has elapsed, the "End Session!" button will
+            appear. This will give you a code which you need to enter into MTurk
+            to receive your payment. You will receive bonus payments based on the
+            timeliness of your answers, as well as the quality of your contributions.{" "}
             <span style={{ color: "red" }}>
               If you do not click "End Session!" you will not recieve a payment!
             </span>
           </p>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ backgroundColor: "orange" }}
-            disabled={this.state.endSessionClicked}
-            onClick={async (e) => {
-              await logSessionEnd(this.props.match.params.id);
+          {!this.state.countDownDone ? (
+            <div>
+              Time left in session: <br></br>
+              <Countdown
+                date={this.state.countDownTime}
+                onComplete={() => {
+                  this.setState({ countDownDone: true });
+                }}
+              ></Countdown>
+            </div>
+          ) : (
+            <div>
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{ backgroundColor: "orange" }}
+                disabled={this.state.endSessionClicked}
+                onClick={async (e) => {
+                  await logSessionEnd(this.props.match.params.id);
 
-              this.setState({ endSessionClicked: true });
-            }}
-          >
-            End Session!
-          </Button>
+                  this.setState({ endSessionClicked: true });
+                }}
+              >
+                End Session!
+              </Button>
+              <br></br>
+            </div>
+          )}
           <br></br>
-          <br></br>
+
           {this.state.endSessionClicked ? (
             <div>
               Your confirmation code is: <b>{this.state.sessionCode}</b>

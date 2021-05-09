@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -16,9 +16,9 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-} from "@material-ui/core";
-import { Redirect } from "react-router";
-import { logWorker } from "../Network";
+} from '@material-ui/core';
+import { Redirect } from 'react-router';
+import { logWorker } from '../Network';
 
 class RedirectView extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class RedirectView extends React.Component {
       redirectToUser: false,
       redirectToWorker: false,
       showDialog: false,
-      workerId: "",
+      workerId: '',
       count: 0,
     };
   }
@@ -38,13 +38,15 @@ class RedirectView extends React.Component {
     if (this.state.redirectToWorker) {
       return (
         <Redirect
-          to={`/mturk/${this.state.workerId}?count=${this.state.count ?? 0}`}
+          to={`/mturk/${this.state.workerId}?count=${
+            this.state.count - 3 ?? 0
+          }`}
         ></Redirect>
       );
     }
     return (
       <div>
-        <AppBar position="static" style={{ backgroundColor: "#4A8790" }}>
+        <AppBar position="static" style={{ backgroundColor: '#4A8790' }}>
           <Toolbar>
             <Grid container justify="center">
               <h1>Select an option</h1>
@@ -54,7 +56,7 @@ class RedirectView extends React.Component {
         <br></br>
         <Container
           maxWidth="lg"
-          style={{ justify: "center", textAlign: "center" }}
+          style={{ justify: 'center', textAlign: 'center' }}
         >
           <Dialog
             open={this.state.showDialog}
@@ -65,11 +67,19 @@ class RedirectView extends React.Component {
           >
             <DialogTitle id="form-dialog-title">
               Enter your Amazon Mechanical Turk Worker ID
+              {/* Thank you for participating! */}
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
                 In order to recieve proper compensation for your work you must
                 enter in your Worker ID.
+                {/* Anyone who submitted at least one vote will recieve payment.
+                Look out for similar HITs in the future. If you were unable to
+                recieve your code, submit the code below as your code and we
+                will compensate you via Amazon MTurk accordingly. */}
+                <br></br>
+                <br></br>
+                {/* <b>Your code: 000000000000001</b> */}
               </DialogContentText>
               <TextField
                 autoFocus
@@ -99,7 +109,7 @@ class RedirectView extends React.Component {
                       redirectToWorker: true,
                     });
                   } else {
-                    alert("Please enter a valid Worker ID");
+                    alert('Please enter a valid Worker ID');
                   }
                 }}
                 color="primary"
@@ -114,8 +124,8 @@ class RedirectView extends React.Component {
               <Card
                 style={{
                   width: 500,
-                  backgroundColor: "#4A8790",
-                  color: "white",
+                  backgroundColor: '#4A8790',
+                  color: 'white',
                 }}
               >
                 <CardActionArea
@@ -147,8 +157,8 @@ class RedirectView extends React.Component {
               <Card
                 style={{
                   width: 500,
-                  backgroundColor: "#4A8790",
-                  color: "white",
+                  backgroundColor: '#4A8790',
+                  color: 'white',
                 }}
               >
                 <CardActionArea
