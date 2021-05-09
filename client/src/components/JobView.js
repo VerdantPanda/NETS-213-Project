@@ -1,15 +1,15 @@
-import React from "react";
-import { Button, Card, Container } from "@material-ui/core";
-import JobViewImg from "./JobViewImg";
-import { sendVote } from "../Network";
+import React from 'react';
+import { Button, Card, Container } from '@material-ui/core';
+import JobViewImg from './JobViewImg';
+import { sendVote } from '../Network';
 class JobView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgHeight: "200px",
-      imgWidth: "200px",
+      imgHeight: '200px',
+      imgWidth: '200px',
       submitImg: 0,
-      textDesc: "",
+      textDesc: '',
     };
     this.getImg = this.getImg.bind(this);
   }
@@ -29,12 +29,12 @@ class JobView extends React.Component {
       <div>
         <Card
           style={{
-            width: "auto",
-            height: "400px",
-            backgroundColor: "#4A8790",
+            width: 'auto',
+            height: '400px',
+            backgroundColor: '#4A8790',
           }}
         >
-          <Container maxWidth="lg" style={{ justify: "center" }}>
+          <Container maxWidth="lg" style={{ justify: 'center' }}>
             <br></br>
             <JobViewImg
               viewKey={this.props.viewKey}
@@ -45,8 +45,8 @@ class JobView extends React.Component {
               sendImg={this.getImg}
             ></JobViewImg>
             <br></br>
-            <p style={{ color: "white" }}>
-              Describe your chosen outfit in one word:
+            <p style={{ color: 'white' }}>
+              Briefly describe your chosen outfit:
             </p>
             <input
               type="text"
@@ -58,12 +58,12 @@ class JobView extends React.Component {
           <br></br>
           <Button
             variant="outlined"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={async () => {
               if (this.state.submitImg === 0) {
-                alert("You must select an outfit before submitting!");
+                alert('You must select an outfit before submitting!');
               } else if (this.state.textDesc.length <= 2) {
-                alert("You must enter a comment before submitting!");
+                alert('You must enter a comment before submitting!');
               } else {
                 // console.log("Mock submission axios call");
                 // console.log(
