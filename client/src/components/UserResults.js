@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Grid,
@@ -14,8 +14,8 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-} from "@material-ui/core";
-import { getVotes } from "../Network";
+} from '@material-ui/core';
+import { getVotes, sendFinalResponse } from '../Network';
 
 class UserResults extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class UserResults extends React.Component {
       totalVotes: 0,
       pollInterval: null,
       outfitInterval: null,
-      comments: [""],
+      comments: [''],
       outfitDecided: false,
       decideDialog: false,
       chosenOutfit: null,
@@ -50,7 +50,7 @@ class UserResults extends React.Component {
   }
 
   async pollVotes() {
-    console.log("USERID: " + this.props.UserId);
+    console.log('USERID: ' + this.props.UserId);
     let theResults = await getVotes(this.props.UserId);
     let results = theResults.data;
     // const results = {
@@ -79,11 +79,11 @@ class UserResults extends React.Component {
 
   render() {
     return !this.state.doneFinally ? (
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: 'center' }}>
         <br></br>
         <br></br>
         <h1>Your Poll:</h1>
-        <Container size="lg" style={{ justify: "center" }}>
+        <Container size="lg" style={{ justify: 'center' }}>
           <Grid container spacing={10} justify="center">
             <Grid item>
               <h3>A</h3>
@@ -116,12 +116,12 @@ class UserResults extends React.Component {
         <br></br>
         <br></br>
 
-        <Container size="lg" style={{ textAlign: "center" }}>
+        <Container size="lg" style={{ textAlign: 'center' }}>
           <LinearProgress
             variant="buffer"
             value={this.state.outfitA}
             valueBuffer={0}
-          />{" "}
+          />{' '}
           <div>
             <i>OUTFIT A</i>
           </div>
@@ -132,7 +132,7 @@ class UserResults extends React.Component {
             value={this.state.outfitB}
             valueBuffer={0}
             color="secondary"
-          />{" "}
+          />{' '}
           <div>
             <i>OUTFIT B</i>
           </div>
@@ -150,7 +150,7 @@ class UserResults extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Have you decided on an outfit?
-            </DialogContentText>{" "}
+            </DialogContentText>{' '}
             <FormControl component="fieldset">
               <RadioGroup
                 name="outfit"
@@ -160,12 +160,12 @@ class UserResults extends React.Component {
                 }}
               >
                 <FormControlLabel
-                  value="A"
+                  value="1"
                   control={<Radio />}
                   label="Outfit A"
                 />
                 <FormControlLabel
-                  value="B"
+                  value="2"
                   control={<Radio />}
                   label="Outfit B"
                 />
@@ -183,10 +183,14 @@ class UserResults extends React.Component {
               Not yet
             </Button>
             <Button
-              onClick={(e) => {
+              onClick={async (e) => {
                 if (this.state.chosenOutfit) {
-                  console.log("MOCK AXIOS CALL to submit chosen outfit.");
-                  console.log("This was chosen: " + this.state.chosenOutfit);
+                  // console.log('MOCK AXIOS CALL to submit chosen outfit.');
+                  console.log('This was chosen: ' + this.state.chosenOutfit);
+                  await sendFinalResponse(
+                    this.props.UserId,
+                    parseInt(this.state.chosenOutfit)
+                  );
                   this.setState({ decideDialog: false, doneFinally: true });
                   clearInterval(this.state.outfitInterval);
                   clearInterval(this.state.pollInterval);
@@ -199,7 +203,7 @@ class UserResults extends React.Component {
           </DialogActions>
         </Dialog>
         <h3>
-          {this.state.totalVotes} vote{this.state.totalVotes !== 1 ? "s" : ""}{" "}
+          {this.state.totalVotes} vote{this.state.totalVotes !== 1 ? 's' : ''}{' '}
           recieved
         </h3>
         <h4>Comments:</h4>
@@ -217,15 +221,15 @@ class UserResults extends React.Component {
       </div>
     ) : (
       <div>
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: 'center' }}>
           <br></br>
           <br></br>
           <h1>You chose Outfit {this.state.chosenOutfit}!</h1>
-          <Container size="lg" style={{ justify: "center" }}>
+          <Container size="lg" style={{ justify: 'center' }}>
             <img
-              alt={this.state.chosenOutfit === "A" ? "pic_1_url" : "pic_2_url"}
+              alt={this.state.chosenOutfit === 'A' ? 'pic_1_url' : 'pic_2_url'}
               src={
-                this.state.chosenOutfit === "A"
+                this.state.chosenOutfit === 'A'
                   ? this.props.pic_1_url
                   : this.props.pic_2_url
               }
